@@ -23,23 +23,41 @@
 
 #endregion License Information (GPL v3)
 
-using System.Drawing;
-// using System.Windows.Forms;
+using CG.Web.MegaApiClient;
+using ShareX.HelpersLib;
+using System;
 
 namespace ShareX.UploadersLib
 {
-    public interface IUploaderService
+    public class MegaAuthInfos
     {
-        string ServiceIdentifier { get; }
+        public string Email { get; set; }
+        [JsonEncrypt]
+        public string Hash { get; set; }
+        [JsonEncrypt]
+        public string PasswordAesKey { get; set; }
 
-        string ServiceName { get; }
+        public MegaAuthInfos()
+        {
+        }
 
-        // Icon ServiceIcon { get; }
+        public MegaAuthInfos(MegaApiClient.AuthInfos authInfos)
+        {
+            Email = authInfos.Email;
+            Hash = authInfos.Hash;
+            PasswordAesKey = Convert.ToBase64String(authInfos.PasswordAesKey);
+        }
 
-        Image ServiceImage { get; }
+        public MegaApiClient.AuthInfos GetMegaApiClientAuthInfos()
+        {
+            byte[] passwordAesKey = null;
 
-        bool CheckConfig(UploadersConfig config);
+            if (!string.IsNullOrEmpty(PasswordAesKey))
+            {
+                passwordAesKey = Convert.FromBase64String(PasswordAesKey);
+            }
 
-        // TabPage GetUploadersConfigTabPage(UploadersConfigForm form);
+            return new MegaApiClient.AuthInfos(Email, Hash, passwordAesKey);
+        }
     }
 }

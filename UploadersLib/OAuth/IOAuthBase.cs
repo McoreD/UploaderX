@@ -23,23 +23,12 @@
 
 #endregion License Information (GPL v3)
 
-using System.Drawing;
-// using System.Windows.Forms;
-
 namespace ShareX.UploadersLib
 {
-    public interface IUploaderService
+    public interface IOAuthBase
     {
-        string ServiceIdentifier { get; }
+        string GetAuthorizationURL();
 
-        string ServiceName { get; }
-
-        // Icon ServiceIcon { get; }
-
-        Image ServiceImage { get; }
-
-        bool CheckConfig(UploadersConfig config);
-
-        // TabPage GetUploadersConfigTabPage(UploadersConfigForm form);
+        bool GetAccessToken(string code);
     }
 }

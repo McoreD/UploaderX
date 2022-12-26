@@ -23,31 +23,54 @@
 
 #endregion License Information (GPL v3)
 
-using ShareX.HelpersLib;
+// using ShareX.UploadersLib.Properties;
 using System;
-using System.Drawing;
-// using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ShareX.UploadersLib
 {
-    public abstract class UploaderService<T> : IUploaderService
+    public class UploaderErrorManager
     {
-        public abstract T EnumValue { get; }
+        public List<UploaderErrorInfo> Errors { get; private set; }
 
-        // Unique identifier
-        public string ServiceIdentifier => EnumValue.ToString();
+        public int Count => Errors.Count;
 
-        public string ServiceName => ((Enum)(object)EnumValue).GetDescription();
+        public string DefaultTitle { get; set; } = "Error";
 
-        // public virtual Icon ServiceIcon { get; }
+        public UploaderErrorManager()
+        {
+            Errors = new List<UploaderErrorInfo>();
+        }
 
-        public virtual Image ServiceImage { get; }
+        public void Add(string text)
+        {
+            Add(DefaultTitle, text);
+        }
 
-        public abstract bool CheckConfig(UploadersConfig config);
+        private void Add(string title, string text)
+        {
+            Errors.Add(new UploaderErrorInfo(title, text));
+        }
+
+        public void Add(UploaderErrorManager manager)
+        {
+            Errors.AddRange(manager.Errors);
+        }
+
+        public void AddFirst(string text)
+        {
+            AddFirst(DefaultTitle, text);
+        }
+
+        private void AddFirst(string title, string text)
+        {
+            Errors.Insert(0, new UploaderErrorInfo(title, text));
+        }
 
         public override string ToString()
         {
-            return ServiceName;
+            return string.Join(Environment.NewLine + Environment.NewLine, Errors.Select(x => x.Text));
         }
     }
 }

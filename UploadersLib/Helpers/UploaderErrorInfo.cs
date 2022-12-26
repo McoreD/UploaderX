@@ -23,23 +23,20 @@
 
 #endregion License Information (GPL v3)
 
-using System.Drawing;
-// using System.Windows.Forms;
+using System;
 
 namespace ShareX.UploadersLib
 {
-    public interface IUploaderService
+    public class UploaderErrorInfo
     {
-        string ServiceIdentifier { get; }
+        public string Title { get; set; }
+        public string Text { get; set; }
+        public Exception Exception { get; set; }
 
-        string ServiceName { get; }
-
-        // Icon ServiceIcon { get; }
-
-        Image ServiceImage { get; }
-
-        bool CheckConfig(UploadersConfig config);
-
-        // TabPage GetUploadersConfigTabPage(UploadersConfigForm form);
+        public UploaderErrorInfo(string title, string text)
+        {
+            Title = title;
+            Text = text;
+        }
     }
 }

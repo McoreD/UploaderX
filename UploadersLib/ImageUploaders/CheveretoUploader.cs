@@ -23,23 +23,29 @@
 
 #endregion License Information (GPL v3)
 
-using System.Drawing;
-// using System.Windows.Forms;
+using ShareX.HelpersLib;
 
 namespace ShareX.UploadersLib
 {
-    public interface IUploaderService
+    public class CheveretoUploader
     {
-        string ServiceIdentifier { get; }
+        public string UploadURL { get; set; }
+        [JsonEncrypt]
+        public string APIKey { get; set; }
 
-        string ServiceName { get; }
+        public CheveretoUploader()
+        {
+        }
 
-        // Icon ServiceIcon { get; }
+        public CheveretoUploader(string uploadURL, string apiKey)
+        {
+            UploadURL = uploadURL;
+            APIKey = apiKey;
+        }
 
-        Image ServiceImage { get; }
-
-        bool CheckConfig(UploadersConfig config);
-
-        // TabPage GetUploadersConfigTabPage(UploadersConfigForm form);
+        public override string ToString()
+        {
+            return URLHelpers.GetHostName(UploadURL);
+        }
     }
 }

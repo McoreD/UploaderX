@@ -23,23 +23,30 @@
 
 #endregion License Information (GPL v3)
 
-using System.Drawing;
-// using System.Windows.Forms;
-
-namespace ShareX.UploadersLib
+namespace ShareX.UploadersLib.FileUploaders
 {
-    public interface IUploaderService
+    public class AmazonS3Endpoint
     {
-        string ServiceIdentifier { get; }
+        public string Name { get; set; }
+        public string Endpoint { get; set; }
+        public string Region { get; set; }
 
-        string ServiceName { get; }
+        public AmazonS3Endpoint(string name, string endpoint)
+        {
+            Name = name;
+            Endpoint = endpoint;
+        }
 
-        // Icon ServiceIcon { get; }
+        public AmazonS3Endpoint(string name, string endpoint, string region)
+        {
+            Name = name;
+            Endpoint = endpoint;
+            Region = region;
+        }
 
-        Image ServiceImage { get; }
-
-        bool CheckConfig(UploadersConfig config);
-
-        // TabPage GetUploadersConfigTabPage(UploadersConfigForm form);
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

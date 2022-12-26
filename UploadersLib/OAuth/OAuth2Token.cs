@@ -23,23 +23,36 @@
 
 #endregion License Information (GPL v3)
 
-using System.Drawing;
-// using System.Windows.Forms;
+using Newtonsoft.Json;
+using ShareX.HelpersLib;
+using System;
 
 namespace ShareX.UploadersLib
 {
-    public interface IUploaderService
+    public class OAuth2Token
     {
-        string ServiceIdentifier { get; }
+        [JsonEncrypt]
+        public string access_token { get; set; }
+        [JsonEncrypt]
+        public string refresh_token { get; set; }
+        public int expires_in { get; set; }
+        public string token_type { get; set; }
+        public string scope { get; set; }
 
-        string ServiceName { get; }
+        public DateTime ExpireDate { get; set; }
 
-        // Icon ServiceIcon { get; }
+        [JsonIgnore]
+        public bool IsExpired
+        {
+            get
+            {
+                return ExpireDate == DateTime.MinValue || DateTime.UtcNow > ExpireDate;
+            }
+        }
 
-        Image ServiceImage { get; }
-
-        bool CheckConfig(UploadersConfig config);
-
-        // TabPage GetUploadersConfigTabPage(UploadersConfigForm form);
+        public void UpdateExpireDate()
+        {
+            ExpireDate = DateTime.UtcNow + TimeSpan.FromSeconds(expires_in - 10);
+        }
     }
 }

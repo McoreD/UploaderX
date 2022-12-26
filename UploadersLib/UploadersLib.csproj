@@ -22,11 +22,24 @@
 	  <None Remove="BaseServices\" />
 	  <None Remove="BaseUploaders\" />
 	  <None Remove="Helpers\" />
+	  <None Remove="FileUploaders\" />
+	  <None Remove="ImageUploaders\" />
+	  <None Remove="OAuth\" />
+	  <None Remove="TextUploaders\" />
+	  <None Remove="URLShorteners\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="APIKeys\" />
 	  <Folder Include="BaseServices\" />
 	  <Folder Include="BaseUploaders\" />
 	  <Folder Include="Helpers\" />
+	  <Folder Include="FileUploaders\" />
+	  <Folder Include="ImageUploaders\" />
+	  <Folder Include="OAuth\" />
+	  <Folder Include="TextUploaders\" />
+	  <Folder Include="URLShorteners\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />
 	</ItemGroup>
 </Project>

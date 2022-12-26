@@ -23,23 +23,25 @@
 
 #endregion License Information (GPL v3)
 
-using System.Drawing;
-// using System.Windows.Forms;
-
 namespace ShareX.UploadersLib
 {
-    public interface IUploaderService
+    public class OAuth2Info
     {
-        string ServiceIdentifier { get; }
+        public string Client_ID { get; set; }
+        public string Client_Secret { get; set; }
+        public OAuth2Token Token { get; set; }
+        public OAuth2ProofKey Proof { get; set; }
 
-        string ServiceName { get; }
+        public OAuth2Info(string client_id, string client_secret)
+        {
+            Client_ID = client_id;
+            Client_Secret = client_secret;
+        }
 
-        // Icon ServiceIcon { get; }
-
-        Image ServiceImage { get; }
-
-        bool CheckConfig(UploadersConfig config);
-
-        // TabPage GetUploadersConfigTabPage(UploadersConfigForm form);
+        public static bool CheckOAuth(OAuth2Info oauth)
+        {
+            return oauth != null && !string.IsNullOrEmpty(oauth.Client_ID) && !string.IsNullOrEmpty(oauth.Client_Secret) &&
+                oauth.Token != null && !string.IsNullOrEmpty(oauth.Token.access_token);
+        }
     }
 }
