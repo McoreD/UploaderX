@@ -91,22 +91,6 @@ namespace ShareX.UploadersLib.ImageUploaders
         {
             string message = DefaultMessage;
 
-            if (!SkipMessageBox)
-            {
-                using (TwitterTweetForm twitterMsg = new TwitterTweetForm())
-                {
-                    twitterMsg.MediaMode = true;
-                    twitterMsg.Message = DefaultMessage;
-
-                    if (twitterMsg.ShowDialog() != DialogResult.OK)
-                    {
-                        return new UploadResult() { IsURLExpected = false };
-                    }
-
-                    message = twitterMsg.Message;
-                }
-            }
-
             return TweetMessageWithMedia(message, stream, fileName);
         }
 

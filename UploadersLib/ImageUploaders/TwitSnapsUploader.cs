@@ -46,11 +46,7 @@ namespace ShareX.UploadersLib.ImageUploaders
 
         public override UploadResult Upload(Stream stream, string fileName)
         {
-            using (TwitterTweetForm msgBox = new TwitterTweetForm())
-            {
-                msgBox.ShowDialog();
-                return Upload(stream, fileName, msgBox.Message);
-            }
+            throw new Exception("Not implemented.");
         }
 
         private UploadResult Upload(Stream stream, string fileName, string msg)

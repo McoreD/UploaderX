@@ -73,12 +73,6 @@ namespace ShareX.UploadersLib.ImageUploaders
             {
                 case TwitPicUploadType.UPLOAD_IMAGE_ONLY:
                     return Upload(stream, fileName, UploadLink);
-                case TwitPicUploadType.UPLOAD_IMAGE_AND_TWITTER:
-                    using (TwitterTweetForm msgBox = new TwitterTweetForm())
-                    {
-                        msgBox.ShowDialog();
-                        return Upload(stream, fileName, UploadAndPostLink, msgBox.Message);
-                    }
             }
 
             return null;
