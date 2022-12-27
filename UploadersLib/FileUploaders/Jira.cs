@@ -212,42 +212,7 @@ namespace ShareX.UploadersLib.FileUploaders
 
         public override UploadResult Upload(Stream stream, string fileName)
         {
-            using (new SSLBypassHelper())
-            {
-                using (JiraUpload up = new JiraUpload(jiraIssuePrefix, GetSummary))
-                {
-                    if (up.ShowDialog() == DialogResult.Cancel)
-                    {
-                        return new UploadResult
-                        {
-                            IsSuccess = true,
-                            IsURLExpected = false
-                        };
-                    }
-
-                    Uri uri = Combine(jiraBaseAddress, string.Format(PathIssueAttachments, up.IssueId));
-                    string query = OAuthManager.GenerateQuery(uri.ToString(), null, HttpMethod.POST, AuthInfo);
-
-                    NameValueCollection headers = new NameValueCollection();
-                    headers.Set("X-Atlassian-Token", "nocheck");
-
-                    UploadResult res = SendRequestFile(query, stream, fileName, "file", headers: headers);
-                    if (res.Response.Contains("errorMessages"))
-                    {
-                        Errors.Add(res.Response);
-                    }
-                    else
-                    {
-                        res.IsURLExpected = true;
-                        var anonType = new[] { new { thumbnail = "" } };
-                        var anonObject = JsonConvert.DeserializeAnonymousType(res.Response, anonType);
-                        res.ThumbnailURL = anonObject[0].thumbnail;
-                        res.URL = Combine(jiraBaseAddress, string.Format(PathBrowseIssue, up.IssueId)).ToString();
-                    }
-
-                    return res;
-                }
-            }
+            throw new Exception("Not implemented.");
         }
 
         private string GetSummary(string issueId)

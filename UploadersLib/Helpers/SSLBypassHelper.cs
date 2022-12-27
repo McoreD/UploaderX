@@ -23,22 +23,28 @@
 
 #endregion License Information (GPL v3)
 
-using System.Drawing;
-using System.IO;
-using Microsoft.Maui.Graphics;
+using System;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ShareX.UploadersLib
 {
-    public abstract class ImageUploader : FileUploader
+    public class SSLBypassHelper : IDisposable
     {
-        public UploadResult UploadImage(Microsoft.Maui.Graphics.IImage image, string fileName)
+        public SSLBypassHelper()
         {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                image.Save(stream, ImageFormat.Png);
+            ServicePointManager.ServerCertificateValidationCallback += ServerCertificateValidationCallback;
+        }
 
-                return Upload(stream, fileName);
-            }
+        public void Dispose()
+        {
+            ServicePointManager.ServerCertificateValidationCallback -= ServerCertificateValidationCallback;
+        }
+
+        private bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
         }
     }
 }

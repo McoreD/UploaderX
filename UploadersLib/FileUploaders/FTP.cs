@@ -279,11 +279,11 @@ namespace ShareX.UploadersLib.FileUploaders
             }
         }
 
-        public void UploadImage(Image image, string remotePath)
+        public void UploadImage(Microsoft.Maui.Graphics.IImage image, string remotePath)
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                image.Save(stream, image.RawFormat);
+                image.Save(stream, ImageFormat.Png);
                 UploadData(stream, remotePath);
             }
         }

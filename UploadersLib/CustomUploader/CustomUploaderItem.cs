@@ -227,7 +227,7 @@ namespace ShareX.UploadersLib
         {
             if (string.IsNullOrEmpty(FileFormName))
             {
-                throw new Exception(Resources.CustomUploaderItem_GetFileFormName_FileFormNameMustBeConfigured);
+                throw new Exception("File form name must be configured.");
             }
 
             return FileFormName;

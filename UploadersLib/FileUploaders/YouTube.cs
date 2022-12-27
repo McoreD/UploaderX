@@ -99,23 +99,6 @@ namespace ShareX.UploadersLib.FileUploaders
             string description = "";
             YouTubeVideoPrivacy visibility = PrivacyType;
 
-            if (ShowDialog)
-            {
-                using (YouTubeVideoOptionsForm form = new YouTubeVideoOptionsForm(title, description, visibility))
-                {
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        title = form.Title;
-                        description = form.Description;
-                        visibility = form.Visibility;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
-
             YouTubeVideoUpload uploadVideo = new YouTubeVideoUpload()
             {
                 snippet = new YouTubeVideoSnippet()
