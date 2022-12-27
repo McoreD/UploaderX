@@ -24,12 +24,12 @@
 #endregion License Information (GPL v3)
 
 using ShareX.HelpersLib;
-using ShareX.UploadersLib.Properties;
+// using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
+// using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace ShareX.UploadersLib.ImageUploaders
@@ -38,7 +38,7 @@ namespace ShareX.UploadersLib.ImageUploaders
     {
         public override ImageDestination EnumValue { get; } = ImageDestination.Photobucket;
 
-        public override Icon ServiceIcon => Resources.Photobucket;
+        // public override Icon ServiceIcon => Resources.Photobucket;
 
         public override bool CheckConfig(UploadersConfig config)
         {
@@ -50,7 +50,7 @@ namespace ShareX.UploadersLib.ImageUploaders
             return new Photobucket(config.PhotobucketOAuthInfo, config.PhotobucketAccountInfo);
         }
 
-        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpPhotobucket;
+        // public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpPhotobucket;
     }
 
     public sealed class Photobucket : ImageUploader, IOAuth

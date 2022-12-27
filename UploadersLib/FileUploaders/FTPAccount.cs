@@ -124,11 +124,9 @@ namespace ShareX.UploadersLib
         public FTPSEncryption FTPSEncryption { get; set; }
 
         [Category("FTPS"), Description("Certificate file location. Optional setting.")]
-        [Editor(typeof(CertFileNameEditor), typeof(UITypeEditor))]
         public string FTPSCertificateLocation { get; set; }
 
         [Category("SFTP"), Description("Key location")]
-        [Editor(typeof(KeyFileNameEditor), typeof(UITypeEditor))]
         public string Keypath { get; set; }
 
         [Category("SFTP"), Description("OpenSSH key passphrase"), PasswordPropertyText(true), JsonEncrypt]

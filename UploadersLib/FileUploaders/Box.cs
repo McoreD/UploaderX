@@ -25,12 +25,12 @@
 
 using Newtonsoft.Json;
 using ShareX.HelpersLib;
-using ShareX.UploadersLib.Properties;
+// using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
+// using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
@@ -38,7 +38,7 @@ namespace ShareX.UploadersLib.FileUploaders
     {
         public override FileDestination EnumValue { get; } = FileDestination.Box;
 
-        public override Icon ServiceIcon => Resources.Box;
+        // public override Icon ServiceIcon => Resources.Box;
 
         public override bool CheckConfig(UploadersConfig config)
         {
@@ -55,7 +55,7 @@ namespace ShareX.UploadersLib.FileUploaders
             };
         }
 
-        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpBox;
+        // public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpBox;
     }
 
     public sealed class Box : FileUploader, IOAuth2

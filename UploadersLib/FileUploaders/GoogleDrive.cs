@@ -24,14 +24,14 @@
 #endregion License Information (GPL v3)
 
 using Newtonsoft.Json;
-using ShareX.UploadersLib.Properties;
+// using ShareX.UploadersLib.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.IO;
 using System.Web;
-using System.Windows.Forms;
+// using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
@@ -39,7 +39,7 @@ namespace ShareX.UploadersLib.FileUploaders
     {
         public override FileDestination EnumValue { get; } = FileDestination.GoogleDrive;
 
-        public override Icon ServiceIcon => Resources.GoogleDrive;
+        // public override Icon ServiceIcon => Resources.GoogleDrive;
 
         public override bool CheckConfig(UploadersConfig config)
         {
@@ -57,7 +57,7 @@ namespace ShareX.UploadersLib.FileUploaders
             };
         }
 
-        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpGoogleDrive;
+        // public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpGoogleDrive;
     }
 
     public enum GoogleDrivePermissionRole
@@ -82,7 +82,7 @@ namespace ShareX.UploadersLib.FileUploaders
         public static GoogleDriveSharedDrive MyDrive = new GoogleDriveSharedDrive
         {
             id = "", // empty defaults to user drive
-            name = Resources.GoogleDrive_MyDrive_My_drive
+            name = "My Drive"
         };
 
         public GoogleDrive(OAuth2Info oauth)

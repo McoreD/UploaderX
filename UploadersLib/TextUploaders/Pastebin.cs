@@ -24,11 +24,11 @@
 #endregion License Information (GPL v3)
 
 using ShareX.HelpersLib;
-using ShareX.UploadersLib.Properties;
+// using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
+// using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.TextUploaders
 {
@@ -36,7 +36,7 @@ namespace ShareX.UploadersLib.TextUploaders
     {
         public override TextDestination EnumValue { get; } = TextDestination.Pastebin;
 
-        public override Icon ServiceIcon => Resources.Pastebin;
+        // public override Icon ServiceIcon => Resources.Pastebin;
 
         public override bool CheckConfig(UploadersConfig config) => true;
 
@@ -52,7 +52,7 @@ namespace ShareX.UploadersLib.TextUploaders
             return new Pastebin(APIKeys.PastebinKey, settings);
         }
 
-        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpPastebin;
+        // public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpPastebin;
     }
 
     public sealed class Pastebin : TextUploader

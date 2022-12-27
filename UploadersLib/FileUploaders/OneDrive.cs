@@ -25,13 +25,13 @@
 
 using Newtonsoft.Json;
 using ShareX.HelpersLib;
-using ShareX.UploadersLib.Properties;
+// using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
+// using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
@@ -39,7 +39,7 @@ namespace ShareX.UploadersLib.FileUploaders
     {
         public override FileDestination EnumValue { get; } = FileDestination.OneDrive;
 
-        public override Icon ServiceIcon => Resources.OneDrive;
+        // public override Icon ServiceIcon => Resources.OneDrive;
 
         public override bool CheckConfig(UploadersConfig config)
         {
@@ -55,7 +55,7 @@ namespace ShareX.UploadersLib.FileUploaders
             };
         }
 
-        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpOneDrive;
+       // public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpOneDrive;
     }
 
     public sealed class OneDrive : FileUploader, IOAuth2
@@ -71,7 +71,7 @@ namespace ShareX.UploadersLib.FileUploaders
         public static OneDriveFileInfo RootFolder = new OneDriveFileInfo
         {
             id = "", // empty defaults to root
-            name = Resources.OneDrive_RootFolder_Root_folder
+            name = "Root folder"
         };
 
         public OneDrive(OAuth2Info authInfo)

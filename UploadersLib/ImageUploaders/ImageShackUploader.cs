@@ -26,11 +26,11 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ShareX.HelpersLib;
-using ShareX.UploadersLib.Properties;
+// using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
+// using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.ImageUploaders
 {
@@ -38,7 +38,7 @@ namespace ShareX.UploadersLib.ImageUploaders
     {
         public override ImageDestination EnumValue { get; } = ImageDestination.ImageShack;
 
-        public override Icon ServiceIcon => Resources.ImageShack;
+       // public override Icon ServiceIcon => Resources.ImageShack;
 
         public override bool CheckConfig(UploadersConfig config)
         {
@@ -50,7 +50,7 @@ namespace ShareX.UploadersLib.ImageUploaders
             return new ImageShackUploader(APIKeys.ImageShackKey, config.ImageShackSettings);
         }
 
-        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpImageShack;
+        // public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpImageShack;
     }
 
     public sealed class ImageShackUploader : ImageUploader

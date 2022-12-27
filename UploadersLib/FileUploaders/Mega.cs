@@ -24,13 +24,13 @@
 #endregion License Information (GPL v3)
 
 using CG.Web.MegaApiClient;
-using ShareX.UploadersLib.Properties;
+// using ShareX.UploadersLib.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
+// using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
@@ -38,7 +38,7 @@ namespace ShareX.UploadersLib.FileUploaders
     {
         public override FileDestination EnumValue { get; } = FileDestination.Mega;
 
-        public override Icon ServiceIcon => Resources.Mega;
+        // public override Icon ServiceIcon => Resources.Mega;
 
         public override bool CheckConfig(UploadersConfig config)
         {
@@ -51,7 +51,7 @@ namespace ShareX.UploadersLib.FileUploaders
             return new Mega(config.MegaAuthInfos?.GetMegaApiClientAuthInfos(), config.MegaParentNodeId);
         }
 
-        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpMega;
+        // public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpMega;
     }
 
     public sealed class Mega : FileUploader, IWebClient

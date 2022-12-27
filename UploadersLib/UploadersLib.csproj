@@ -27,6 +27,9 @@
 	  <None Remove="OAuth\" />
 	  <None Remove="TextUploaders\" />
 	  <None Remove="URLShorteners\" />
+	  <None Remove="MegaApiClient" />
+	  <None Remove="CustomUploader\" />
+	  <None Remove="CustomUploader\Functions\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="APIKeys\" />
@@ -38,8 +41,13 @@
 	  <Folder Include="OAuth\" />
 	  <Folder Include="TextUploaders\" />
 	  <Folder Include="URLShorteners\" />
+	  <Folder Include="CustomUploader\" />
+	  <Folder Include="CustomUploader\Functions\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="MegaApiClient" Version="1.10.3" />
 	</ItemGroup>
 </Project>
