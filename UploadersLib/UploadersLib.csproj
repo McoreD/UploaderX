@@ -30,6 +30,7 @@
 	  <None Remove="MegaApiClient" />
 	  <None Remove="CustomUploader\" />
 	  <None Remove="CustomUploader\Functions\" />
+	  <None Remove="Compatibility\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="APIKeys\" />
@@ -43,6 +44,7 @@
 	  <Folder Include="URLShorteners\" />
 	  <Folder Include="CustomUploader\" />
 	  <Folder Include="CustomUploader\Functions\" />
+	  <Folder Include="Compatibility\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />

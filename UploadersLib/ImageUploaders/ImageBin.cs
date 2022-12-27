@@ -23,33 +23,38 @@
 
 #endregion License Information (GPL v3)
 
-using System.Linq;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 
-namespace ShareX.UploadersLib
+namespace ShareX.UploadersLib.ImageUploaders
 {
-    // Example: {select:domain1.com|domain2.com}
-    internal class CustomUploaderFunctionSelect : CustomUploaderFunction
+    public sealed class ImageBin : ImageUploader
     {
-        public override string Name { get; } = "select";
-
-        public override int MinParameterCount { get; } = 1;
-
-        public override string Call(ShareXCustomUploaderSyntaxParser parser, string[] parameters)
+        public override UploadResult Upload(Stream stream, string fileName)
         {
-            string[] values = parameters.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            Dictionary<string, string> arguments = new Dictionary<string, string>();
+            arguments.Add("t", "file");
+            arguments.Add("name", "ShareX");
+            arguments.Add("tags", "ShareX");
+            arguments.Add("description", "test");
+            arguments.Add("adult", "t");
+            arguments.Add("sfile", "Upload");
+            arguments.Add("url", "");
 
-            if (values.Length > 0)
+            UploadResult result = SendRequestFile("http://imagebin.ca/upload.php", stream, fileName, "f", arguments);
+
+            if (result.IsSuccess)
             {
-                //TODO: ParserSelectForm
-                /*using (ParserSelectForm form = new ParserSelectForm(values))
+                Match match = Regex.Match(result.Response, @"(?<=ca/view/).+(?=\.html'>)");
+                if (match != null)
                 {
-                    form.ShowDialog();
-                    return form.SelectedText;
+                    string url = "http://imagebin.ca/img/" + match.Value + Path.GetExtension(fileName);
+                    result.URL = url;
                 }
-                */
             }
 
-            return null;
+            return result;
         }
     }
 }

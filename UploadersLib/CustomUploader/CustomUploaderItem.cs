@@ -111,7 +111,7 @@ namespace ShareX.UploadersLib
         {
             return new CustomUploaderItem()
             {
-                Version = Application.ProductVersion,
+                Version = "0.1", //TODO: Application.ProductVersion,
                 RequestMethod = HttpMethod.POST,
                 Body = CustomUploaderBody.MultipartFormData
             };
@@ -143,7 +143,7 @@ namespace ShareX.UploadersLib
         {
             if (string.IsNullOrEmpty(RequestURL))
             {
-                throw new Exception(Resources.CustomUploaderItem_GetRequestURL_RequestURLMustBeConfigured);
+                throw new Exception("Request must be configured.");
             }
 
             ShareXCustomUploaderSyntaxParser parser = new ShareXCustomUploaderSyntaxParser(input);
@@ -449,7 +449,7 @@ namespace ShareX.UploadersLib
                 DeletionURL = MigrateOldSyntax(DeletionURL);
                 ErrorMessage = MigrateOldSyntax(ErrorMessage);
 
-                Version = Application.ProductVersion;
+                Version = "0.1"; //TODO: Application.ProductVersion;
             }
         }
 

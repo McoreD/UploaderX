@@ -23,33 +23,25 @@
 
 #endregion License Information (GPL v3)
 
-using System.Linq;
+using System.IO;
 
-namespace ShareX.UploadersLib
+namespace ShareX.UploadersLib.ImageUploaders
 {
-    // Example: {select:domain1.com|domain2.com}
-    internal class CustomUploaderFunctionSelect : CustomUploaderFunction
+    public sealed class Img1Uploader : ImageUploader
     {
-        public override string Name { get; } = "select";
+        private const string uploadURL = "http://img1.us/?app";
 
-        public override int MinParameterCount { get; } = 1;
-
-        public override string Call(ShareXCustomUploaderSyntaxParser parser, string[] parameters)
+        public override UploadResult Upload(Stream stream, string fileName)
         {
-            string[] values = parameters.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            UploadResult result = SendRequestFile(uploadURL, stream, fileName, "fileup");
 
-            if (values.Length > 0)
+            if (result.IsSuccess)
             {
-                //TODO: ParserSelectForm
-                /*using (ParserSelectForm form = new ParserSelectForm(values))
-                {
-                    form.ShowDialog();
-                    return form.SelectedText;
-                }
-                */
+                string lastLine = result.Response.Remove(0, result.Response.LastIndexOf('\n') + 1).Trim();
+                result.URL = lastLine;
             }
 
-            return null;
+            return result;
         }
     }
 }
