@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using ShareX;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
@@ -31,12 +32,12 @@ namespace UploaderX
         }
 
         public string FileName { get; set; }
-        public EDataType DataType { get; set; }
 
         public TaskSettings TaskSettings { get; set; }
 
-        public UploadResult Result { get; set; }
+        public Stopwatch UploadDuration { get; set; }
 
-	}
+        public UploadResult Result { get; set; }
+    }
 }
 

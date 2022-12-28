@@ -32,8 +32,6 @@ public class Worker : BackgroundService
 
     void OnChanged(object sender, FileSystemEventArgs e)
     {
-        _logger.LogInformation("A new file has been created: " + e.FullPath);
-
         try
         {
             string destPath = Path.Combine(Path.Combine(Path.Combine(destDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM")), Path.GetFileName(e.FullPath));

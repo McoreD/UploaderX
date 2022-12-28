@@ -18,6 +18,7 @@ namespace UploaderX
 		{
             Info = new TaskInfo();
             Info.FilePath = filePath;
+            Info.TaskSettings = TaskSettings.GetDefaultTaskSettings();
 		}
 
         private bool LoadFileStream()
@@ -28,6 +29,7 @@ namespace UploaderX
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace);
                 return false;
             }
 
@@ -58,17 +60,15 @@ namespace UploaderX
                 uploader.BufferSize = (int)Math.Pow(2, Program.Settings.BufferSizePower) * 1024;
 
                 fileName = URLHelpers.RemoveBidiControlCharacters(fileName);
+                fileName = URLHelpers.ReplaceReservedCharacters(fileName, "_");
 
-                if (Info.TaskSettings.UploadSettings.FileUploadReplaceProblematicCharacters)
-                {
-                    fileName = URLHelpers.ReplaceReservedCharacters(fileName, "_");
-                }
-
-                // Info.UploadDuration = Stopwatch.StartNew();
+                Info.UploadDuration = Stopwatch.StartNew();
 
                 UploadResult result = uploader.Upload(stream, fileName);
                
-                // Info.UploadDuration.Stop();
+                Info.UploadDuration.Stop();
+
+                Console.WriteLine(uploader.Errors.ToString());
 
                 return result;
             }

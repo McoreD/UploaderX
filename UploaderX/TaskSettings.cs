@@ -55,10 +55,10 @@ namespace ShareX
 
         public bool UseDefaultDestinations = true;
         public ImageDestination ImageDestination = ImageDestination.Imgur;
-        public FileDestination ImageFileDestination = FileDestination.Dropbox;
+        public FileDestination ImageFileDestination = FileDestination.AmazonS3;
         public TextDestination TextDestination = TextDestination.Pastebin;
-        public FileDestination TextFileDestination = FileDestination.Dropbox;
-        public FileDestination FileDestination = FileDestination.Dropbox;
+        public FileDestination TextFileDestination = FileDestination.AmazonS3;
+        public FileDestination FileDestination = FileDestination.AmazonS3;
         public UrlShortenerType URLShortenerDestination = UrlShortenerType.BITLY;
         public URLSharingServices URLSharingServiceDestination = URLSharingServices.Twitter;
 
