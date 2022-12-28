@@ -35,12 +35,9 @@ namespace ShareX
 {
     public class ApplicationConfig : SettingsBase<ApplicationConfig>
     {
-        public TaskSettings DefaultTaskSettings = new TaskSettings();
-
         public DateTime FirstTimeRunDate = DateTime.Now;
         public string FileUploadDefaultDirectory = "";
         public int NameParserAutoIncrementNumber = 0;
-        public List<QuickTaskInfo> QuickTaskPresets = QuickTaskInfo.DefaultPresets;
 
         // Main window
         public bool FirstTimeMinimizeToTray = true;
@@ -56,7 +53,6 @@ namespace ShareX
 
         #region General
 
-        public SupportedLanguage Language = SupportedLanguage.Automatic;
         public bool ShowTray = true;
         public bool SilentRun = false;
         public bool TrayIconProgressEnabled = true;
@@ -66,10 +62,6 @@ namespace ShareX
         public Point MainFormPosition = Point.Empty;
         public bool RememberMainFormSize = false;
         public Size MainFormSize = Size.Empty;
-
-        public HotkeyType TrayLeftClickAction = HotkeyType.RectangleRegion;
-        public HotkeyType TrayLeftDoubleClickAction = HotkeyType.OpenMainWindow;
-        public HotkeyType TrayMiddleClickAction = HotkeyType.ClipboardUploadWithContentViewer;
 
         public bool CheckPreReleaseUpdates = false;
 
@@ -81,7 +73,6 @@ namespace ShareX
         public bool UseDarkTheme = true;
 
         public bool UseCustomTheme = true;
-        public List<ShareXTheme> Themes = ShareXTheme.GetDefaultThemes();
         public int SelectedTheme = 0;
 
         #endregion
@@ -99,18 +90,13 @@ namespace ShareX
         #region Main window
 
         public bool ShowMenu = true;
-        public TaskViewMode TaskViewMode = TaskViewMode.ThumbnailView;
 
         // Thumbnail view
         public bool ShowThumbnailTitle = true;
-        public ThumbnailTitleLocation ThumbnailTitleLocation = ThumbnailTitleLocation.Top;
         public Size ThumbnailSize = new Size(200, 150);
-        public ThumbnailViewClickAction ThumbnailClickAction = ThumbnailViewClickAction.Default;
 
         // List view
         public bool ShowColumns = true;
-        public ImagePreviewVisibility ImagePreview = ImagePreviewVisibility.Automatic;
-        public ImagePreviewLocation ImagePreviewLocation = ImagePreviewLocation.Side;
 
         #endregion Main window
 
@@ -147,22 +133,18 @@ namespace ShareX
         public bool HistorySaveTasks = true;
         public bool HistoryCheckURL = false;
 
-        public RecentTask[] RecentTasks = null;
         public bool RecentTasksSave = true;
         public int RecentTasksMaxCount = 10;
         public bool RecentTasksShowInMainWindow = true;
         public bool RecentTasksShowInTrayMenu = true;
         public bool RecentTasksTrayMenuMostRecentFirst = false;
 
-        public HistorySettings HistorySettings = new HistorySettings();
-        public ImageHistorySettings ImageHistorySettings = new ImageHistorySettings();
 
         #endregion History
 
         #region Print
 
         public bool DontShowPrintSettingsDialog = false;
-        public PrintSettings PrintSettings = new PrintSettings();
 
         #endregion Print
 
@@ -190,7 +172,6 @@ namespace ShareX
         public bool ShowMainWindowTip { get; set; }
 
         [Category("Application"), DefaultValue(""), Description("URLs will open using this path instead of default browser. Example path: chrome.exe")]
-        [Editor(typeof(ExeFileNameEditor), typeof(UITypeEditor))]
         public string BrowserPath { get; set; }
 
         [Category("Application"), DefaultValue(false), Description("Save settings after task completed but only if there is no other active tasks.")]
@@ -260,15 +241,12 @@ namespace ShareX
         public int ShowLargeFileSizeWarning { get; set; }
 
         [Category("Paths"), Description("Custom uploaders configuration path. If you have already configured this setting in another device and you are attempting to use the same location, then backup the file before configuring this setting and restore after exiting ShareX.")]
-        [Editor(typeof(DirectoryNameEditor), typeof(UITypeEditor))]
         public string CustomUploadersConfigPath { get; set; }
 
         [Category("Paths"), Description("Custom hotkeys configuration path. If you have already configured this setting in another device and you are attempting to use the same location, then backup the file before configuring this setting and restore after exiting ShareX.")]
-        [Editor(typeof(DirectoryNameEditor), typeof(UITypeEditor))]
         public string CustomHotkeysConfigPath { get; set; }
 
         [Category("Paths"), Description("Custom screenshot path (secondary location). If custom screenshot path is temporarily unavailable (e.g. network share), ShareX will use this location (recommended to be a local path).")]
-        [Editor(typeof(DirectoryNameEditor), typeof(UITypeEditor))]
         public string CustomScreenshotsPath2 { get; set; }
 
         [Category("Drag and drop window"), DefaultValue(150), Description("Size of drop window.")]
@@ -276,9 +254,6 @@ namespace ShareX
 
         [Category("Drag and drop window"), DefaultValue(5), Description("Position offset of drop window.")]
         public int DropOffset { get; set; }
-
-        [Category("Drag and drop window"), DefaultValue(ContentAlignment.BottomRight), Description("Where drop window will open.")]
-        public ContentAlignment DropAlignment { get; set; }
 
         [Category("Drag and drop window"), DefaultValue(100), Description("Opacity of drop window.")]
         public int DropOpacity { get; set; }
@@ -306,9 +281,6 @@ namespace ShareX
         #endregion ScreenRecord Form
 
         #region Actions toolbar
-
-        public List<HotkeyType> ActionsToolbarList = new List<HotkeyType>() { HotkeyType.RectangleRegion, HotkeyType.PrintScreen, HotkeyType.ScreenRecorder,
-            HotkeyType.None, HotkeyType.FileUpload, HotkeyType.ClipboardUploadWithContentViewer };
 
         public bool ActionsToolbarRunAtStartup = false;
 
