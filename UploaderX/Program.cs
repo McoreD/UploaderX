@@ -5,8 +5,9 @@ namespace UploaderX;
 
 public class Program
 {
-    internal static ApplicationConfig Settings { get; set; }
-    internal static UploadersConfig UploadersConfig { get; set; }
+    internal static ApplicationConfig? Settings { get; set; }
+    internal static UploadersConfig? UploadersConfig { get; set; }
+    internal static TaskSettings DefaultTaskSettings { get; set; }
 
     public static void Main(string[] args)
     {

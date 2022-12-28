@@ -25,10 +25,6 @@
 
 using Newtonsoft.Json;
 using ShareX.HelpersLib;
-using ShareX.ImageEffectsLib;
-using ShareX.IndexerLib;
-using ShareX.MediaLib;
-using ShareX.ScreenCaptureLib;
 using ShareX.UploadersLib;
 using System;
 using System.Collections.Generic;
@@ -37,6 +33,7 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
+using UploaderX;
 
 namespace ShareX
 {
@@ -49,8 +46,6 @@ namespace ShareX
         public bool IsSafeTaskSettings => TaskSettingsReference != null;
 
         public string Description = "";
-
-        public HotkeyType Job = HotkeyType.None;
 
         public bool UseDefaultAfterCaptureJob = true;
         public AfterCaptureTasks AfterCaptureJob = AfterCaptureTasks.CopyImageToClipboard | AfterCaptureTasks.SaveImageToFile | AfterCaptureTasks.UploadImageToHost;
@@ -117,7 +112,6 @@ namespace ShareX
         public TaskSettingsUpload UploadSettings = new TaskSettingsUpload();
 
         public bool UseDefaultActions = true;
-        public List<ExternalProgram> ExternalPrograms = new List<ExternalProgram>();
 
         public bool UseDefaultToolsSettings = true;
         public TaskSettingsTools ToolsSettings = new TaskSettingsTools();
@@ -140,12 +134,6 @@ namespace ShareX
         public TaskSettingsAdvanced AdvancedSettings = new TaskSettingsAdvanced();
 
         public bool WatchFolderEnabled = false;
-        public List<WatchFolderSettings> WatchFolderList = new List<WatchFolderSettings>();
-
-        public override string ToString()
-        {
-            return !string.IsNullOrEmpty(Description) ? Description : Job.GetLocalizedDescription();
-        }
 
         public bool IsUsingDefaultSettings
         {
@@ -173,7 +161,6 @@ namespace ShareX
             {
                 safeTaskSettings = Program.DefaultTaskSettings.Copy();
                 safeTaskSettings.Description = taskSettings.Description;
-                safeTaskSettings.Job = taskSettings.Job;
             }
             else
             {
@@ -232,11 +219,6 @@ namespace ShareX
                     UploadSettings = defaultTaskSettings.UploadSettings;
                 }
 
-                if (UseDefaultActions)
-                {
-                    ExternalPrograms = defaultTaskSettings.ExternalPrograms;
-                }
-
                 if (UseDefaultToolsSettings)
                 {
                     ToolsSettings = defaultTaskSettings.ToolsSettings;
@@ -273,7 +255,7 @@ namespace ShareX
         public bool ShowToastNotificationAfterTaskCompleted = true;
         public float ToastWindowDuration = 3f;
         public float ToastWindowFadeDuration = 1f;
-        public ContentAlignment ToastWindowPlacement = ContentAlignment.BottomRight;
+
         public Size ToastWindowSize = new Size(400, 300);
         public ToastClickAction ToastWindowLeftClickAction = ToastClickAction.OpenUrl;
         public ToastClickAction ToastWindowRightClickAction = ToastClickAction.CloseNotification;
@@ -309,8 +291,6 @@ namespace ShareX
         #endregion Image / General
 
         #region Image / Effects
-
-        public List<ImageEffectPreset> ImageEffectPresets = new List<ImageEffectPreset>() { ImageEffectPreset.GetDefaultPreset() };
         public int SelectedImageEffectPreset = 0;
 
         public bool ShowImageEffectsWindowAfterCapture = false;
@@ -343,15 +323,8 @@ namespace ShareX
 
         #endregion Capture / General
 
-        #region Capture / Region capture
-
-        public RegionCaptureOptions SurfaceOptions = new RegionCaptureOptions();
-
-        #endregion Capture / Region capture
-
         #region Capture / Screen recorder
 
-        public FFmpegOptions FFmpegOptions = new FFmpegOptions();
         public int ScreenRecordFPS = 30;
         public int GIFFPS = 15;
         public bool ScreenRecordShowCursor = true;
@@ -364,18 +337,6 @@ namespace ShareX
         public bool ScreenRecordTransparentRegion = false;
 
         #endregion Capture / Screen recorder
-
-        #region Capture / Scrolling capture
-
-        public ScrollingCaptureOptions ScrollingCaptureOptions = new ScrollingCaptureOptions();
-
-        #endregion Capture / Scrolling capture
-
-        #region Capture / OCR
-
-        public OCROptions OCROptions = new OCROptions();
-
-        #endregion Capture / OCR
     }
 
     public class TaskSettingsUpload
@@ -402,12 +363,6 @@ namespace ShareX
         public bool ClipboardUploadAutoIndexFolder = false;
 
         #endregion Upload / Clipboard upload
-
-        #region Upload / Uploader filters
-
-        public List<UploaderFilter> UploaderFilters = new List<UploaderFilter>();
-
-        #endregion Upload / Uploader filters
     }
 
     public class TaskSettingsTools
@@ -415,11 +370,6 @@ namespace ShareX
         public string ScreenColorPickerFormat = "$hex";
         public string ScreenColorPickerFormatCtrl = "$r255, $g255, $b255";
         public string ScreenColorPickerInfoText = "RGB: $r255, $g255, $b255$nHex: $hex$nX: $x Y: $y";
-        public IndexerSettings IndexerSettings = new IndexerSettings();
-        public ImageCombinerOptions ImageCombinerOptions = new ImageCombinerOptions();
-        public VideoConverterOptions VideoConverterOptions = new VideoConverterOptions();
-        public VideoThumbnailOptions VideoThumbnailOptions = new VideoThumbnailOptions();
-        public BorderlessWindowSettings BorderlessWindowSettings = new BorderlessWindowSettings();
     }
 
     public class TaskSettingsAdvanced
@@ -442,12 +392,10 @@ namespace ShareX
         [Category("Capture"), DefaultValue(false), Description("Disable annotation support in region capture.")]
         public bool RegionCaptureDisableAnnotation { get; set; }
 
-        [Category("Upload"), Description("Files with these file extensions will be uploaded using image uploader."),
-        Editor("System.Windows.Forms.Design.StringCollectionEditor,System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+        [Category("Upload"), Description("Files with these file extensions will be uploaded using image uploader.")]
         public List<string> ImageExtensions { get; set; }
 
-        [Category("Upload"), Description("Files with these file extensions will be uploaded using text uploader."),
-        Editor("System.Windows.Forms.Design.StringCollectionEditor,System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+        [Category("Upload"), Description("Files with these file extensions will be uploaded using text uploader.")]
         public List<string> TextExtensions { get; set; }
 
         [Category("Upload"), DefaultValue(false), Description("Copy URL before start upload. Only works for FTP, FTPS, SFTP, Amazon S3, Google Cloud Storage and Azure Storage.")]
@@ -459,8 +407,7 @@ namespace ShareX
         [Category("Upload text"), DefaultValue("text"), Description("Text format e.g. csharp, cpp, etc.")]
         public string TextFormat { get; set; }
 
-        [Category("Upload text"), DefaultValue(""), Description("Custom text input. Use %input for text input. Example you can create web page with your text in it."),
-        Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
+        [Category("Upload text"), DefaultValue(""), Description("Custom text input. Use %input for text input. Example you can create web page with your text in it.")]
         public string TextCustom { get; set; }
 
         [Category("Upload text"), DefaultValue(true), Description("HTML encode custom text input.")]

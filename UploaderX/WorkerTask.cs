@@ -2,6 +2,7 @@
 using ShareX.HelpersLib;
 using System.Diagnostics;
 using ShareX.UploadersLib;
+using ShareX;
 
 namespace UploaderX
 {
@@ -13,8 +14,10 @@ namespace UploaderX
         private GenericUploader uploader;
         private TaskReferenceHelper taskReferenceHelper;
 
-        public WorkerTask()
+        public WorkerTask(string filePath)
 		{
+            Info = new TaskInfo();
+            Info.FilePath = filePath;
 		}
 
         private bool LoadFileStream()
@@ -29,6 +32,12 @@ namespace UploaderX
             }
 
             return true;
+        }
+
+        public UploadResult UploadFile()
+        {
+            LoadFileStream();
+            return UploadFile(Data, Info.FileName);
         }
 
         public UploadResult UploadFile(Stream stream, string fileName)
@@ -48,15 +57,6 @@ namespace UploaderX
                 uploader.Errors.DefaultTitle = service.ServiceName + " " + "error";
                 uploader.BufferSize = (int)Math.Pow(2, Program.Settings.BufferSizePower) * 1024;
 
-                if (Info.TaskSettings.AfterUploadJob.HasFlag(AfterUploadTasks.CopyURLToClipboard) && Info.TaskSettings.AdvancedSettings.EarlyCopyURL)
-                {
-                    uploader.EarlyURLCopyRequested += url =>
-                    {
-                        ClipboardHelpers.CopyText(url);
-                        EarlyURLCopied = true;
-                    };
-                }
-
                 fileName = URLHelpers.RemoveBidiControlCharacters(fileName);
 
                 if (Info.TaskSettings.UploadSettings.FileUploadReplaceProblematicCharacters)
@@ -64,11 +64,11 @@ namespace UploaderX
                     fileName = URLHelpers.ReplaceReservedCharacters(fileName, "_");
                 }
 
-                Info.UploadDuration = Stopwatch.StartNew();
+                // Info.UploadDuration = Stopwatch.StartNew();
 
                 UploadResult result = uploader.Upload(stream, fileName);
-
-                Info.UploadDuration.Stop();
+               
+                // Info.UploadDuration.Stop();
 
                 return result;
             }

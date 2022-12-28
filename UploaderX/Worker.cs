@@ -1,4 +1,7 @@
-﻿using ShareX.HelpersLib;
+﻿using System;
+using ShareX;
+using ShareX.HelpersLib;
+using ShareX.UploadersLib;
 
 namespace UploaderX;
 
@@ -11,47 +14,41 @@ public class Worker : BackgroundService
     public Worker(ILogger<Worker> logger)
     {
         _logger = logger;
+        Program.Settings = ApplicationConfig.Load("/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Apps/ShareX/ApplicationConfig.json");
+        Program.UploadersConfig = UploadersConfig.Load("/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Apps/ShareX/UploadersConfig.json");
+        _logger.LogInformation($"Active S3 endpoint: {Program.UploadersConfig.AmazonS3Settings.Endpoint}");
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        // Create a new FileSystemWatcher
         FileSystemWatcher watcher = new FileSystemWatcher();
         watcher.IncludeSubdirectories = true;
         watcher.Path = watchDir;
 
-        // Set the filters to only watch for new files
         watcher.NotifyFilter = NotifyFilters.FileName;
-
-        // Add event handlers
         watcher.Created += OnChanged;
-
-        // Begin watching the directory
         watcher.EnableRaisingEvents = true;
-
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            await Task.Delay(1000, stoppingToken);
-        }
     }
 
-    // This method is called when a new file is created in the watched directory
     void OnChanged(object sender, FileSystemEventArgs e)
     {
         _logger.LogInformation("A new file has been created: " + e.FullPath);
 
         try
         {
-            // Move to yyyy-MM folder
             string destPath = Path.Combine(Path.Combine(Path.Combine(destDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM")), Path.GetFileName(e.FullPath));
             FileHelpers.CreateDirectoryFromFilePath(destPath);
             File.Move(e.FullPath, destPath);
             _logger.LogInformation($"Moved {e.FullPath} to {destPath}");
+
+            WorkerTask wt = new WorkerTask(destPath);
+            UploadResult result = wt.UploadFile();
+            _logger.LogInformation(result.URL);
+            Task<bool> task = ClipboardHelpers.CopyTextAsync(result.URL);
         }
         catch(Exception ex)
         {
-            _logger.LogError(ex.Message);
+            _logger.LogError(ex.StackTrace);
         }
     }
 }
