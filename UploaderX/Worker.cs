@@ -8,14 +8,29 @@ namespace UploaderX;
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
-    private string watchDir = "/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Pictures/Screenshots";
-    private string destDir = "/Users/mike/Library/CloudStorage/OneDrive-Personal/Pictures/Screenshots";
+
+    private string watchDir;
+    private string destDir;
 
     public Worker(ILogger<Worker> logger)
     {
+        switch (Environment.OSVersion.Platform)
+        {
+            case PlatformID.Unix:
+                watchDir = "/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Pictures/Screenshots";
+                destDir = "/Users/mike/Library/CloudStorage/OneDrive-Personal/Pictures/Screenshots";
+                Program.Settings = ApplicationConfig.Load("/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Apps/ShareX/ApplicationConfig.json");
+                Program.UploadersConfig = UploadersConfig.Load("/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Apps/ShareX/UploadersConfig.json");
+                break;
+            case PlatformID.Win32NT:
+                watchDir = "C:\\Users\\mike\\OneDrive - Main Roads\\Pictures\\Screenshots";
+                destDir = "C:\\Users\\mike\\OneDrive\\Pictures\\Screenshots";
+                Program.Settings = ApplicationConfig.Load(@"C:\Users\mike\OneDrive - Main Roads\Apps\ShareX\ApplicationConfig.json");
+                Program.UploadersConfig = UploadersConfig.Load(@"C:\\Users\\mike\\OneDrive - Main Roads\\Apps\\ShareX\\UploadersConfig.json");
+                break;
+        }
+
         _logger = logger;
-        Program.Settings = ApplicationConfig.Load("/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Apps/ShareX/ApplicationConfig.json");
-        Program.UploadersConfig = UploadersConfig.Load("/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Apps/ShareX/UploadersConfig.json");
         _logger.LogInformation($"Active S3 endpoint: {Program.UploadersConfig.AmazonS3Settings.Endpoint}");
     }
 
