@@ -59,6 +59,7 @@ namespace UploaderX
                 uploader.Errors.DefaultTitle = service.ServiceName + " " + "error";
                 uploader.BufferSize = (int)Math.Pow(2, Program.Settings.BufferSizePower) * 1024;
 
+                fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%d_%ra{10}") + Path.GetExtension(fileName);
                 fileName = URLHelpers.RemoveBidiControlCharacters(fileName);
                 fileName = URLHelpers.ReplaceReservedCharacters(fileName, "_");
 

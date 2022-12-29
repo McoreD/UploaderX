@@ -53,7 +53,7 @@ public class Worker : BackgroundService
             FileHelpers.CreateDirectoryFromFilePath(destPath);
             if (!Path.GetFileName(e.FullPath).StartsWith("."))
             {
-                File.Move(e.FullPath, destPath);
+                File.Move(e.FullPath, destPath, overwrite: true);
 
                 WorkerTask wt = new WorkerTask(destPath);
                 UploadResult result = wt.UploadFile();
