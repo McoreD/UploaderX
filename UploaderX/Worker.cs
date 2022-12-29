@@ -17,22 +17,16 @@ public class Worker : BackgroundService
     public Worker(ILogger<Worker> logger)
     {
         _logger = logger;
-        switch (Environment.OSVersion.Platform)
-        {
-            case PlatformID.Unix:
-                Program.Settings = ApplicationConfig.Load("ApplicationConfig.json");
-                Program.UploadersConfig = UploadersConfig.Load("UploadersConfig.json");
-                break;
-            case PlatformID.Win32NT:
-                Program.Settings = ApplicationConfig.Load("ApplicationConfig.json");
-                Program.UploadersConfig = UploadersConfig.Load("UploadersConfig.json");
-                break;
-        }
-
-        watchDir = Path.Combine(Environment.CurrentDirectory, "Watch Folder");
-        Helpers.CreateDirectoryFromDirectoryPath(watchDir);
-        destDir = Program.Settings.CustomScreenshotsPath2;
+        string AppDir = AppDomain.CurrentDomain.BaseDirectory;
+        Program.Settings = ApplicationConfig.Load(Path.Combine(AppDir, "ApplicationConfig.json"));
+        Program.UploadersConfig = UploadersConfig.Load(Path.Combine(AppDir, "UploadersConfig.json"));
         Program.UploadersConfig.SupportDPAPIEncryption = false;
+
+        watchDir = Directory.Exists(Program.Settings.CustomScreenshotsPath2) ? Program.Settings.CustomScreenshotsPath2 : Path.Combine(AppDir, "Watch Folder");
+        Helpers.CreateDirectoryFromDirectoryPath(watchDir);
+
+        destDir = watchDir;
+
         _logger.LogInformation("Watch Dir: " + watchDir);
         _logger.LogInformation("Destination Dir: " + destDir);
     }
@@ -40,7 +34,6 @@ public class Worker : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         FileSystemWatcher watcher = new FileSystemWatcher();
-        watcher.IncludeSubdirectories = true;
         watcher.Path = watchDir;
 
         watcher.NotifyFilter = NotifyFilters.FileName;

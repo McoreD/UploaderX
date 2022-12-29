@@ -44,8 +44,8 @@ namespace UploaderX
 
         public UploadResult UploadFile(Stream stream, string fileName)
         {
-            // FileUploaderService service = UploaderFactory.FileUploaderServices[FileDestination.AmazonS3];
-            ImageUploaderService service = UploaderFactory.ImageUploaderServices[ImageDestination.Imgur];
+            FileUploaderService service = UploaderFactory.FileUploaderServices[FileDestination.AmazonS3];
+            // ImageUploaderService service = UploaderFactory.ImageUploaderServices[ImageDestination.Imgur];
             return UploadData(service, stream, fileName);
         }
 
