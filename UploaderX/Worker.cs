@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using ShareX;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
@@ -45,7 +46,7 @@ public class Worker : BackgroundService
         watcher.EnableRaisingEvents = true;
     }
 
-    void OnChanged(object sender, FileSystemEventArgs e)
+    async void OnChanged(object sender, FileSystemEventArgs e)
     {
         try
         {
@@ -53,7 +54,30 @@ public class Worker : BackgroundService
             FileHelpers.CreateDirectoryFromFilePath(destPath);
             if (!Path.GetFileName(e.FullPath).StartsWith("."))
             {
-                File.Move(e.FullPath, destPath, overwrite: true);
+                int successCount = 0;
+                long previousSize = -1;
+
+                await Helpers.WaitWhileAsync(() =>
+                {
+                    if (!FileHelpers.IsFileLocked(e.FullPath))
+                    {
+                        long currentSize = FileHelpers.GetFileSize(e.FullPath);
+
+                        if (currentSize > 0 && currentSize == previousSize)
+                        {
+                            successCount++;
+                        }
+
+                        previousSize = currentSize;
+                        return successCount < 4;
+                    }
+
+                    previousSize = -1;
+                    return true;
+                }, 250, 5000, () =>
+                {
+                    File.Move(e.FullPath, destPath, overwrite: true);
+                }, 1000);
 
                 WorkerTask wt = new WorkerTask(destPath);
                 UploadResult result = wt.UploadFile();
