@@ -135,6 +135,8 @@ namespace ShareX
 
         public bool WatchFolderEnabled = false;
 
+        public List<WatchFolderSettings> WatchFolderList = new List<WatchFolderSettings>();
+
         public bool IsUsingDefaultSettings
         {
             get

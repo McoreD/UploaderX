@@ -3,6 +3,7 @@ using System.IO;
 using ShareX;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
+using TextCopy;
 
 namespace UploaderX;
 
@@ -15,24 +16,25 @@ public class Worker : BackgroundService
 
     public Worker(ILogger<Worker> logger)
     {
+        _logger = logger;
         switch (Environment.OSVersion.Platform)
         {
             case PlatformID.Unix:
-                watchDir = "/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Pictures/Screenshots";
-                destDir = "/Users/mike/Library/CloudStorage/OneDrive-Personal/Pictures/Screenshots";
-                Program.Settings = ApplicationConfig.Load("/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Apps/ShareX/ApplicationConfig.json");
-                Program.UploadersConfig = UploadersConfig.Load("/Users/mike/Library/CloudStorage/OneDrive-MainRoads/Apps/ShareX/UploadersConfig.json");
+                Program.Settings = ApplicationConfig.Load("ApplicationConfig.json");
+                Program.UploadersConfig = UploadersConfig.Load("UploadersConfig.json");
                 break;
             case PlatformID.Win32NT:
-                watchDir = "C:\\Users\\mike\\OneDrive - Main Roads\\Pictures\\Screenshots";
-                destDir = "C:\\Users\\mike\\OneDrive\\Pictures\\Screenshots";
-                Program.Settings = ApplicationConfig.Load(@"C:\Users\mike\OneDrive - Main Roads\Apps\ShareX\ApplicationConfig.json");
-                Program.UploadersConfig = UploadersConfig.Load(@"C:\\Users\\mike\\OneDrive - Main Roads\\Apps\\ShareX\\UploadersConfig.json");
+                Program.Settings = ApplicationConfig.Load("ApplicationConfig.json");
+                Program.UploadersConfig = UploadersConfig.Load("UploadersConfig.json");
                 break;
         }
 
-        _logger = logger;
-        _logger.LogInformation($"Active S3 endpoint: {Program.UploadersConfig.AmazonS3Settings.Endpoint}");
+        watchDir = Path.Combine(Environment.CurrentDirectory, "Watch Folder");
+        Helpers.CreateDirectoryFromDirectoryPath(watchDir);
+        destDir = Program.Settings.CustomScreenshotsPath2;
+        Program.UploadersConfig.SupportDPAPIEncryption = false;
+        _logger.LogInformation("Watch Dir: " + watchDir);
+        _logger.LogInformation("Destination Dir: " + destDir);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -50,7 +52,8 @@ public class Worker : BackgroundService
     {
         try
         {
-            string destPath = Path.Combine(Path.Combine(Path.Combine(destDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM")), Path.GetFileName(e.FullPath));
+            string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%d_%ra{10}") + Path.GetExtension(e.FullPath);
+            string destPath = Path.Combine(Path.Combine(Path.Combine(destDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM")), fileName);
             FileHelpers.CreateDirectoryFromFilePath(destPath);
             if (!Path.GetFileName(e.FullPath).StartsWith("."))
             {
@@ -82,7 +85,7 @@ public class Worker : BackgroundService
                 WorkerTask wt = new WorkerTask(destPath);
                 UploadResult result = wt.UploadFile();
                 _logger.LogInformation(result.URL);
-                ClipboardHelpers.CopyText(result.URL);
+                ClipboardService.SetText(result.URL);
             }
         }
         catch(Exception ex)

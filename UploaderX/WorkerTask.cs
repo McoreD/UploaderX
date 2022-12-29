@@ -44,8 +44,8 @@ namespace UploaderX
 
         public UploadResult UploadFile(Stream stream, string fileName)
         {
-            FileUploaderService service = UploaderFactory.FileUploaderServices[FileDestination.AmazonS3];
-
+            // FileUploaderService service = UploaderFactory.FileUploaderServices[FileDestination.AmazonS3];
+            ImageUploaderService service = UploaderFactory.ImageUploaderServices[ImageDestination.Imgur];
             return UploadData(service, stream, fileName);
         }
 
@@ -59,7 +59,6 @@ namespace UploaderX
                 uploader.Errors.DefaultTitle = service.ServiceName + " " + "error";
                 uploader.BufferSize = (int)Math.Pow(2, Program.Settings.BufferSizePower) * 1024;
 
-                fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%d_%ra{10}") + Path.GetExtension(fileName);
                 fileName = URLHelpers.RemoveBidiControlCharacters(fileName);
                 fileName = URLHelpers.ReplaceReservedCharacters(fileName, "_");
 
