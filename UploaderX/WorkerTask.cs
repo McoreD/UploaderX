@@ -6,8 +6,8 @@ using ShareX;
 
 namespace UploaderX
 {
-	public class WorkerTask : IDisposable
-	{
+    public class WorkerTask : IDisposable
+    {
         public TaskInfo Info { get; private set; }
         public Stream Data { get; private set; }
 
@@ -15,11 +15,11 @@ namespace UploaderX
         private TaskReferenceHelper taskReferenceHelper;
 
         public WorkerTask(string filePath)
-		{
+        {
             Info = new TaskInfo();
             Info.FilePath = filePath;
             Info.TaskSettings = TaskSettings.GetDefaultTaskSettings();
-		}
+        }
 
         private bool LoadFileStream()
         {
@@ -44,8 +44,15 @@ namespace UploaderX
 
         public UploadResult UploadFile(Stream stream, string fileName)
         {
-            FileUploaderService service = UploaderFactory.FileUploaderServices[FileDestination.AmazonS3];
-            // ImageUploaderService service = UploaderFactory.ImageUploaderServices[ImageDestination.Imgur];
+            IGenericUploaderService service;
+            if (Program.Settings != null)
+            {
+                service = UploaderFactory.FileUploaderServices[FileDestination.AmazonS3];
+            }
+            else
+            {
+                service = UploaderFactory.ImageUploaderServices[ImageDestination.Imgur];
+            }
             return UploadData(service, stream, fileName);
         }
 
@@ -65,7 +72,7 @@ namespace UploaderX
                 Info.UploadDuration = Stopwatch.StartNew();
 
                 UploadResult result = uploader.Upload(stream, fileName);
-               
+
                 Info.UploadDuration.Stop();
 
                 Console.WriteLine(uploader.Errors.ToString());
