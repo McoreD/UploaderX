@@ -1,4 +1,5 @@
 ﻿using ShareX;
+using ShareX.HelpersLib;
 using ShareX.UploadersLib;
 
 namespace UploaderX;

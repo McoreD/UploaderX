@@ -36,17 +36,19 @@ public class Worker : BackgroundService
         {
             string destPath = Path.Combine(Path.Combine(Path.Combine(destDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM")), Path.GetFileName(e.FullPath));
             FileHelpers.CreateDirectoryFromFilePath(destPath);
-            File.Move(e.FullPath, destPath);
-            _logger.LogInformation($"Moved {e.FullPath} to {destPath}");
+            if (!Path.GetFileName(e.FullPath).StartsWith("."))
+            {
+                File.Move(e.FullPath, destPath);
 
-            WorkerTask wt = new WorkerTask(destPath);
-            UploadResult result = wt.UploadFile();
-            _logger.LogInformation(result.URL);
-            Task<bool> task = ClipboardHelpers.CopyTextAsync(result.URL);
+                WorkerTask wt = new WorkerTask(destPath);
+                UploadResult result = wt.UploadFile();
+                _logger.LogInformation(result.URL);
+                ClipboardHelpers.CopyText(result.URL);
+            }
         }
         catch(Exception ex)
         {
-            _logger.LogError(ex.StackTrace);
+            _logger.LogError(ex.Message);
         }
     }
 }
