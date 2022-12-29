@@ -45,7 +45,7 @@ namespace UploaderX
         public UploadResult UploadFile(Stream stream, string fileName)
         {
             IGenericUploaderService service;
-            if (Program.Settings != null)
+            if (Directory.Exists(Program.Settings.CustomScreenshotsPath2))
             {
                 service = UploaderFactory.FileUploaderServices[FileDestination.AmazonS3];
             }
