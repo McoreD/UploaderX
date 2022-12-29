@@ -10,9 +10,10 @@ namespace UploaderX;
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
+    private FileSystemWatcher _watcher;
 
-    private string watchDir;
-    private string destDir;
+    private string _watchDir;
+    private string _destDir;
 
     public Worker(ILogger<Worker> logger)
     {
@@ -22,23 +23,23 @@ public class Worker : BackgroundService
         Program.UploadersConfig = UploadersConfig.Load(Path.Combine(AppDir, "UploadersConfig.json"));
         Program.UploadersConfig.SupportDPAPIEncryption = false;
 
-        watchDir = Directory.Exists(Program.Settings.CustomScreenshotsPath2) ? Program.Settings.CustomScreenshotsPath2 : Path.Combine(AppDir, "Watch Folder");
-        Helpers.CreateDirectoryFromDirectoryPath(watchDir);
+        _watchDir = Directory.Exists(Program.Settings.CustomScreenshotsPath2) ? Program.Settings.CustomScreenshotsPath2 : Path.Combine(AppDir, "Watch Folder");
+        Helpers.CreateDirectoryFromDirectoryPath(_watchDir);
 
-        destDir = watchDir;
+        _destDir = _watchDir;
 
-        _logger.LogInformation("Watch Dir: " + watchDir);
-        _logger.LogInformation("Destination Dir: " + destDir);
+        _logger.LogInformation("Watch Dir: " + _watchDir);
+        _logger.LogInformation("Destination Dir: " + _destDir);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        FileSystemWatcher watcher = new FileSystemWatcher();
-        watcher.Path = watchDir;
+        _watcher = new FileSystemWatcher();
+        _watcher.Path = _watchDir;
 
-        watcher.NotifyFilter = NotifyFilters.FileName;
-        watcher.Created += OnChanged;
-        watcher.EnableRaisingEvents = true;
+        _watcher.NotifyFilter = NotifyFilters.FileName;
+        _watcher.Created += OnChanged;
+        _watcher.EnableRaisingEvents = true;
     }
 
     async void OnChanged(object sender, FileSystemEventArgs e)
@@ -46,7 +47,7 @@ public class Worker : BackgroundService
         try
         {
             string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%d_%ra{10}") + Path.GetExtension(e.FullPath);
-            string destPath = Path.Combine(Path.Combine(Path.Combine(destDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM")), fileName);
+            string destPath = Path.Combine(Path.Combine(Path.Combine(_destDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM")), fileName);
             FileHelpers.CreateDirectoryFromFilePath(destPath);
             if (!Path.GetFileName(e.FullPath).StartsWith("."))
             {
