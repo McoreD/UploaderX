@@ -45,7 +45,7 @@ namespace UploaderX
         public UploadResult UploadFile(Stream stream, string fileName)
         {
             IGenericUploaderService service;
-            if (Directory.Exists(Program.Settings.CustomScreenshotsPath2))
+            if (Directory.Exists(App.Settings.CustomScreenshotsPath2))
             {
                 service = UploaderFactory.FileUploaderServices[FileDestination.AmazonS3];
             }
@@ -59,12 +59,12 @@ namespace UploaderX
         public UploadResult UploadData(IGenericUploaderService service, Stream stream, string fileName)
         {
 
-            uploader = service.CreateUploader(Program.UploadersConfig, taskReferenceHelper);
+            uploader = service.CreateUploader(App.UploadersConfig, taskReferenceHelper);
 
             if (uploader != null)
             {
                 uploader.Errors.DefaultTitle = service.ServiceName + " " + "error";
-                uploader.BufferSize = (int)Math.Pow(2, Program.Settings.BufferSizePower) * 1024;
+                uploader.BufferSize = (int)Math.Pow(2, App.Settings.BufferSizePower) * 1024;
 
                 fileName = URLHelpers.RemoveBidiControlCharacters(fileName);
                 fileName = URLHelpers.ReplaceReservedCharacters(fileName, "_");

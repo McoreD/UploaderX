@@ -1,39 +1,35 @@
 ﻿using System;
 using System.IO;
+using Microsoft.Extensions.Logging;
 using ShareX;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
-using TextCopy;
 
 namespace UploaderX;
 
-public class Worker : BackgroundService
+public class Worker
 {
-    private readonly ILogger<Worker> _logger;
     private FileSystemWatcher _watcher;
 
     private string _watchDir;
     private string _destDir;
 
-    public Worker(ILogger<Worker> logger)
+    public Worker()
     {
-        _logger = logger;
+        DebugHelper.Init("Log.txt");
         string AppDir = AppDomain.CurrentDomain.BaseDirectory;
-        Program.Settings = ApplicationConfig.Load(Path.Combine(AppDir, "ApplicationConfig.json"));
-        Program.UploadersConfig = UploadersConfig.Load(Path.Combine(AppDir, "UploadersConfig.json"));
-        Program.UploadersConfig.SupportDPAPIEncryption = false;
+        App.Settings = ApplicationConfig.Load(Path.Combine(AppDir, "ApplicationConfig.json"));
+        App.UploadersConfig = UploadersConfig.Load(Path.Combine(AppDir, "UploadersConfig.json"));
+        App.UploadersConfig.SupportDPAPIEncryption = false;
 
-        _watchDir = Directory.Exists(Program.Settings.CustomScreenshotsPath2) ? Program.Settings.CustomScreenshotsPath2 : Path.Combine(AppDir, "Watch Folder");
+        _watchDir = Directory.Exists(App.Settings.CustomScreenshotsPath2) ? App.Settings.CustomScreenshotsPath2 : Path.Combine(AppDir, "Watch Folder");
         Helpers.CreateDirectoryFromDirectoryPath(_watchDir);
 
         _destDir = _watchDir;
 
-        _logger.LogInformation("Watch Dir: " + _watchDir);
-        _logger.LogInformation("Destination Dir: " + _destDir);
-    }
+        DebugHelper.Logger.WriteLine("Watch Dir: " + _watchDir);
+        DebugHelper.Logger.WriteLine("Destination Dir: " + _destDir);
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
         _watcher = new FileSystemWatcher();
         _watcher.Path = _watchDir;
 
@@ -78,13 +74,13 @@ public class Worker : BackgroundService
 
                 WorkerTask wt = new WorkerTask(destPath);
                 UploadResult result = wt.UploadFile();
-                _logger.LogInformation(result.URL);
-                ClipboardService.SetText(result.URL);
+                DebugHelper.Logger.WriteLine(result.URL);
+                await Clipboard.Default.SetTextAsync(result.URL);
             }
         }
         catch(Exception ex)
         {
-            _logger.LogError(ex.Message);
+            DebugHelper.Logger.WriteLine(ex.Message);
         }
     }
 }

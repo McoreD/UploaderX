@@ -84,7 +84,7 @@ namespace ShareX
             {
                 if (UseDefaultImageSettings)
                 {
-                    return Program.DefaultTaskSettings.ImageSettings;
+                    return App.DefaultTaskSettings.ImageSettings;
                 }
 
                 return TaskSettingsReference.ImageSettings;
@@ -101,7 +101,7 @@ namespace ShareX
             {
                 if (UseDefaultCaptureSettings)
                 {
-                    return Program.DefaultTaskSettings.CaptureSettings;
+                    return App.DefaultTaskSettings.CaptureSettings;
                 }
 
                 return TaskSettingsReference.CaptureSettings;
@@ -123,7 +123,7 @@ namespace ShareX
             {
                 if (UseDefaultToolsSettings)
                 {
-                    return Program.DefaultTaskSettings.ToolsSettings;
+                    return App.DefaultTaskSettings.ToolsSettings;
                 }
 
                 return TaskSettingsReference.ToolsSettings;
@@ -132,10 +132,6 @@ namespace ShareX
 
         public bool UseDefaultAdvancedSettings = true;
         public TaskSettingsAdvanced AdvancedSettings = new TaskSettingsAdvanced();
-
-        public bool WatchFolderEnabled = false;
-
-        public List<WatchFolderSettings> WatchFolderList = new List<WatchFolderSettings>();
 
         public bool IsUsingDefaultSettings
         {
@@ -147,11 +143,13 @@ namespace ShareX
             }
         }
 
+        public bool WatchFolderEnabled { get; private set; }
+
         public static TaskSettings GetDefaultTaskSettings()
         {
             TaskSettings taskSettings = new TaskSettings();
             taskSettings.SetDefaultSettings();
-            taskSettings.TaskSettingsReference = Program.DefaultTaskSettings;
+            taskSettings.TaskSettingsReference = App.DefaultTaskSettings;
             return taskSettings;
         }
 
@@ -159,9 +157,9 @@ namespace ShareX
         {
             TaskSettings safeTaskSettings;
 
-            if (taskSettings.IsUsingDefaultSettings && Program.DefaultTaskSettings != null)
+            if (taskSettings.IsUsingDefaultSettings && App.DefaultTaskSettings != null)
             {
-                safeTaskSettings = Program.DefaultTaskSettings.Copy();
+                safeTaskSettings = App.DefaultTaskSettings.Copy();
                 safeTaskSettings.Description = taskSettings.Description;
             }
             else
@@ -176,9 +174,9 @@ namespace ShareX
 
         private void SetDefaultSettings()
         {
-            if (Program.DefaultTaskSettings != null)
+            if (App.DefaultTaskSettings != null)
             {
-                TaskSettings defaultTaskSettings = Program.DefaultTaskSettings.Copy();
+                TaskSettings defaultTaskSettings = App.DefaultTaskSettings.Copy();
 
                 if (UseDefaultAfterCaptureJob)
                 {
@@ -258,7 +256,6 @@ namespace ShareX
         public float ToastWindowDuration = 3f;
         public float ToastWindowFadeDuration = 1f;
 
-        public Size ToastWindowSize = new Size(400, 300);
         public ToastClickAction ToastWindowLeftClickAction = ToastClickAction.OpenUrl;
         public ToastClickAction ToastWindowRightClickAction = ToastClickAction.CloseNotification;
         public ToastClickAction ToastWindowMiddleClickAction = ToastClickAction.AnnotateImage;

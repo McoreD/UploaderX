@@ -59,9 +59,8 @@ namespace ShareX
         public bool TaskbarProgressEnabled = true;
         public bool UseWhiteShareXIcon = false;
         public bool RememberMainFormPosition = false;
-        public Point MainFormPosition = Point.Empty;
+
         public bool RememberMainFormSize = false;
-        public Size MainFormSize = Size.Empty;
 
         public bool CheckPreReleaseUpdates = false;
 
@@ -93,7 +92,6 @@ namespace ShareX
 
         // Thumbnail view
         public bool ShowThumbnailTitle = true;
-        public Size ThumbnailSize = new Size(200, 150);
 
         // List view
         public bool ShowColumns = true;
@@ -284,7 +282,6 @@ namespace ShareX
 
         public bool ActionsToolbarRunAtStartup = false;
 
-        public Point ActionsToolbarPosition = Point.Empty;
 
         public bool ActionsToolbarLockPosition = false;
 
@@ -292,10 +289,6 @@ namespace ShareX
 
         #endregion Actions toolbar
 
-        #region Color Picker Form
 
-        public List<Color> RecentColors = new List<Color>();
-
-        #endregion Color Picker Form
     }
 }
