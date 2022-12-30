@@ -36,7 +36,7 @@ namespace ShareX.UploadersLib
 
         // Icon ServiceIcon { get; }
 
-        Image ServiceImage { get; }
+        // Image ServiceImage { get; }
 
         bool CheckConfig(UploadersConfig config);
 
