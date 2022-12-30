@@ -12,6 +12,9 @@ public partial class MainPage : ContentPage
     private string _watchDir;
     private string _destDir;
 
+    public delegate void UrlReceivedEventHandler(string url);
+    public event UrlReceivedEventHandler UrlReceived;
+
     public MainPage()
     {
         InitializeComponent();
@@ -37,6 +40,18 @@ public partial class MainPage : ContentPage
         _watcher.NotifyFilter = NotifyFilters.FileName;
         _watcher.Created += OnChanged;
         _watcher.EnableRaisingEvents = true;
+
+        this.UrlReceived += MainPage_UrlReceived;
+    }
+
+    private async void MainPage_UrlReceived(string url)
+    {
+        await Clipboard.Default.SetTextAsync(url);
+    }
+
+    private void OnUrlReceived(string url)
+    {
+        UrlReceived?.Invoke(url);
     }
 
     private void OnCounterClicked(object sender, EventArgs e)
@@ -88,7 +103,7 @@ public partial class MainPage : ContentPage
                 _workerTask = new WorkerTask(destPath);
                 UploadResult result = _workerTask.UploadFile();
                 DebugHelper.Logger.WriteLine(result.URL);
-                await Clipboard.Default.SetTextAsync(result.URL);
+                OnUrlReceived(result.URL);
             }
         }
         catch (Exception ex)

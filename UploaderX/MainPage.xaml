@@ -35,6 +35,8 @@
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Center" />
 
+            <Label x:Name="lblUrl"></Label>
+
         </VerticalStackLayout>
     </ScrollView>
 
