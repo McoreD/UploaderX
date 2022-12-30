@@ -3,7 +3,6 @@ using System.IO;
 using ShareX;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
-using TextCopy;
 
 namespace UploaderX;
 
@@ -79,7 +78,7 @@ public class Worker : BackgroundService
                 WorkerTask wt = new WorkerTask(destPath);
                 UploadResult result = wt.UploadFile();
                 _logger.LogInformation(result.URL);
-                ClipboardService.SetText(result.URL);
+                await Clipboard.Default.SetTextAsync(result.URL);
             }
         }
         catch(Exception ex)
