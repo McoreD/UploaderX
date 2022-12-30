@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using HelpersLib;
+using Microsoft.Extensions.Logging;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
 
@@ -8,7 +9,7 @@ public partial class MainPage : ContentPage
 {
     int count = 0;
     private FileSystemWatcher _watcher;
-    private WorkerTask _workerTask;
+
     private string _watchDir;
     private string _destDir;
 
@@ -38,10 +39,11 @@ public partial class MainPage : ContentPage
         _watcher.Path = _watchDir;
 
         _watcher.NotifyFilter = NotifyFilters.FileName;
-        _watcher.Created += OnChanged;
+        _watcher.Created += OnCreated;
         _watcher.EnableRaisingEvents = true;
 
         this.UrlReceived += MainPage_UrlReceived;
+
     }
 
     private async void MainPage_UrlReceived(string url)
@@ -54,7 +56,7 @@ public partial class MainPage : ContentPage
         UrlReceived?.Invoke(url);
     }
 
-    private void OnCounterClicked(object sender, EventArgs e)
+    private async void OnCounterClicked(object sender, EventArgs e)
     {
         count++;
 
@@ -63,10 +65,10 @@ public partial class MainPage : ContentPage
         else
             CounterBtn.Text = $"Clicked {count} times";
 
-        SemanticScreenReader.Announce(CounterBtn.Text);
+        await Clipboard.Default.SetTextAsync(CounterBtn.Text);
     }
 
-    async void OnChanged(object sender, FileSystemEventArgs e)
+    async void OnCreated(object sender, FileSystemEventArgs e)
     {
         try
         {
@@ -100,8 +102,8 @@ public partial class MainPage : ContentPage
                     File.Move(e.FullPath, destPath, overwrite: true);
                 }, 1000);
 
-                _workerTask = new WorkerTask(destPath);
-                UploadResult result = _workerTask.UploadFile();
+                WorkerTask task = new WorkerTask(destPath);
+                UploadResult result = task.UploadFile();
                 DebugHelper.Logger.WriteLine(result.URL);
                 OnUrlReceived(result.URL);
             }
@@ -110,6 +112,7 @@ public partial class MainPage : ContentPage
         {
             DebugHelper.Logger.WriteLine(ex.Message);
         }
+
     }
 }
 
