@@ -1,29 +1,101 @@
 ﻿using Microsoft.Extensions.Logging;
+using ShareX.HelpersLib;
+using ShareX.UploadersLib;
 
 namespace UploaderX;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
-	Worker _worker;
+    int count = 0;
+    private FileSystemWatcher _watcher;
+    private WorkerTask _workerTask;
+    private string _watchDir;
+    private string _destDir;
 
-	public MainPage()
-	{
-		InitializeComponent();
-		_worker = new Worker();
-	}
+    public MainPage()
+    {
+        InitializeComponent();
 
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		count++;
+        string AppDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
+        App.Settings = ApplicationConfig.Load(Path.Combine(AppDir, "ApplicationConfig.json"));
+        App.UploadersConfig = UploadersConfig.Load(Path.Combine(AppDir, "UploadersConfig.json"));
+        App.UploadersConfig.SupportDPAPIEncryption = false;
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
+        DebugHelper.Init(Path.Combine(AppDir, $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
+        _watchDir = Directory.Exists(App.Settings.CustomScreenshotsPath2) ? App.Settings.CustomScreenshotsPath2 : Path.Combine(AppDir, "Watch Folder");
+        Helpers.CreateDirectoryFromDirectoryPath(_watchDir);
+
+        _destDir = _watchDir;
+
+        DebugHelper.Logger.WriteLine("Watch Dir: " + _watchDir);
+        DebugHelper.Logger.WriteLine("Destination Dir: " + _destDir);
+
+        _watcher = new FileSystemWatcher();
+        _watcher.Path = _watchDir;
+
+        _watcher.NotifyFilter = NotifyFilters.FileName;
+        _watcher.Created += OnChanged;
+        _watcher.EnableRaisingEvents = true;
+    }
+
+    private void OnCounterClicked(object sender, EventArgs e)
+    {
+        count++;
+
+        if (count == 1)
+            CounterBtn.Text = $"Clicked {count} time";
+        else
+            CounterBtn.Text = $"Clicked {count} times";
+
+        SemanticScreenReader.Announce(CounterBtn.Text);
+    }
+
+    async void OnChanged(object sender, FileSystemEventArgs e)
+    {
+        try
+        {
+            string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%d_%ra{10}") + Path.GetExtension(e.FullPath);
+            string destPath = Path.Combine(Path.Combine(Path.Combine(_destDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM")), fileName);
+            FileHelpers.CreateDirectoryFromFilePath(destPath);
+            if (!Path.GetFileName(e.FullPath).StartsWith("."))
+            {
+                int successCount = 0;
+                long previousSize = -1;
+
+                await Helpers.WaitWhileAsync(() =>
+                {
+                    if (!FileHelpers.IsFileLocked(e.FullPath))
+                    {
+                        long currentSize = FileHelpers.GetFileSize(e.FullPath);
+
+                        if (currentSize > 0 && currentSize == previousSize)
+                        {
+                            successCount++;
+                        }
+
+                        previousSize = currentSize;
+                        return successCount < 4;
+                    }
+
+                    previousSize = -1;
+                    return true;
+                }, 250, 5000, () =>
+                {
+                    File.Move(e.FullPath, destPath, overwrite: true);
+                }, 1000);
+
+                _workerTask = new WorkerTask(destPath);
+                UploadResult result = _workerTask.UploadFile();
+                DebugHelper.Logger.WriteLine(result.URL);
+                await Clipboard.Default.SetTextAsync(result.URL);
+            }
+        }
+        catch (Exception ex)
+        {
+            DebugHelper.Logger.WriteLine(ex.Message);
+        }
+    }
 }
 
 
