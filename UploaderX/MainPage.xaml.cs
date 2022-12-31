@@ -21,8 +21,9 @@ public partial class MainPage : ContentPage
         InitializeComponent();
 
         string AppDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
-        App.Settings = ApplicationConfig.Load(Path.Combine(AppDir, "ApplicationConfig.json"));
-        App.UploadersConfig = UploadersConfig.Load(Path.Combine(AppDir, "UploadersConfig.json"));
+        string AppSettingsDir = Path.Combine(AppDir, "Settings");
+        App.Settings = ApplicationConfig.Load(Path.Combine(AppSettingsDir, "ApplicationConfig.json"));
+        App.UploadersConfig = UploadersConfig.Load(Path.Combine(AppSettingsDir, "UploadersConfig.json"));
         App.UploadersConfig.SupportDPAPIEncryption = false;
 
         DebugHelper.Init(Path.Combine(AppDir, $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
