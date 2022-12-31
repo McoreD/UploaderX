@@ -8,12 +8,13 @@ namespace UploaderX;
 
 public partial class MainPage : ContentPage
 {
-    int count = 0;
-    private FileSystemWatcher _watcher;
+    string AppDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
 
     private string _watchDir;
     private string _destDir;
     private string _destSubDir;
+
+    private FileSystemWatcher _watcher;
 
     public delegate void UrlReceivedEventHandler(string url);
     public event UrlReceivedEventHandler UrlReceived;
@@ -22,7 +23,6 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
 
-        string AppDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
         string AppSettingsDir = Path.Combine(AppDir, "Settings");
 
         txtAppConfigPath.Text = Path.Combine(AppSettingsDir, "ApplicationConfig.json");
@@ -32,7 +32,7 @@ public partial class MainPage : ContentPage
         App.UploadersConfig = UploadersConfig.Load(txtUploaderConfigPath.Text);
         App.UploadersConfig.SupportDPAPIEncryption = false;
 
-        DebugHelper.Init(Path.Combine(AppDir, $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
+        DebugHelper.Init(Path.Combine(Path.Combine(AppDir, "Logs"), $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
 
         _watchDir = Directory.Exists(App.Settings.CustomScreenshotsPath2) ? App.Settings.CustomScreenshotsPath2 : Path.Combine(AppDir, "Watch Folder");
         Helpers.CreateDirectoryFromDirectoryPath(_watchDir);
@@ -55,9 +55,9 @@ public partial class MainPage : ContentPage
 
     }
 
-    private async void MainPage_UrlReceived(string url)
+    private void MainPage_UrlReceived(string url)
     {
-        await Clipboard.Default.SetTextAsync(url);
+        Clipboard.Default.SetTextAsync(url);
         lblUrl.Text = url;
         wvUrl.Source = new UrlWebViewSource() { Url = url };
     }
@@ -100,6 +100,18 @@ public partial class MainPage : ContentPage
                 {
                     File.Move(e.FullPath, destPath, overwrite: true);
                 }, 1000);
+
+                if (Path.GetExtension(destPath).ToLower().Equals(".mov"))
+                {
+                    string ffmpegPath = Path.Combine(AppDir, "ffmpeg");
+                    ShareX.MediaLib.FFmpegCLIManager ffmpeg = new ShareX.MediaLib.FFmpegCLIManager(ffmpegPath);
+                    string mp4Path = Path.ChangeExtension(destPath, "mp4");
+                    string args = $"-i \"{destPath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
+                    if (ffmpeg.Run(args))
+                    {
+                        destPath = mp4Path;
+                    }
+                }           
 
                 WorkerTask task = new WorkerTask(destPath);
                 UploadResult result = task.UploadFile();
