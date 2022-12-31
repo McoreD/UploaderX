@@ -106,7 +106,9 @@ public partial class MainPage : ContentPage
                 WorkerTask task = new WorkerTask(destPath);
                 UploadResult result = task.UploadFile();
                 DebugHelper.Logger.WriteLine(result.URL);
-                OnUrlReceived(result.URL);
+                MainThread.BeginInvokeOnMainThread(() => {
+                    OnUrlReceived(result.URL);
+                });
             }
         }
         catch (Exception ex)
