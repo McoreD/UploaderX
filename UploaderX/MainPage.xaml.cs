@@ -30,7 +30,7 @@ public partial class MainPage : ContentPage
 
         _watchDir = Directory.Exists(App.Settings.CustomScreenshotsPath2) ? App.Settings.CustomScreenshotsPath2 : Path.Combine(AppDir, "Watch Folder");
         Helpers.CreateDirectoryFromDirectoryPath(_watchDir);
-
+        txtWatchDir.Text = _watchDir;
         _destDir = _watchDir;
 
         DebugHelper.Logger.WriteLine("Watch Dir: " + _watchDir);
@@ -49,24 +49,13 @@ public partial class MainPage : ContentPage
 
     private async void MainPage_UrlReceived(string url)
     {
+        lblUrl.Text = url;
         await Clipboard.Default.SetTextAsync(url);
     }
 
     private void OnUrlReceived(string url)
     {
         UrlReceived?.Invoke(url);
-    }
-
-    private async void OnCounterClicked(object sender, EventArgs e)
-    {
-        count++;
-
-        if (count == 1)
-            CounterBtn.Text = $"Clicked {count} time";
-        else
-            CounterBtn.Text = $"Clicked {count} times";
-
-        await Clipboard.Default.SetTextAsync(CounterBtn.Text);
     }
 
     async void OnCreated(object sender, FileSystemEventArgs e)

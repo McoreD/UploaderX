@@ -5,35 +5,26 @@
 
     <ScrollView>
         <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+            Spacing="10"
+            Padding="10"
+            VerticalOptions="StartAndExpand">
 
             <Image
-                Source="dotnet_bot.png"
+                Source="sharex_logo.png"
                 SemanticProperties.Description="Cute dot net bot waving hi to you!"
                 HeightRequest="200"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Start" />
 
             <Label
-                Text="Hello, World!"
+                Text="UploaderX"
                 SemanticProperties.HeadingLevel="Level1"
                 FontSize="32"
                 HorizontalOptions="Center" />
 
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
+            <HorizontalStackLayout>
+                <Button x:Name="btnBrowseWatchDir" Text="Browse" Margin="10"></Button>
+                <Label x:Name="txtWatchDir" Margin="10"></Label>
+            </HorizontalStackLayout>
 
             <Label x:Name="lblUrl"></Label>
 
