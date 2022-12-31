@@ -3,23 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UploaderX.MainPage">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="10"
-            Padding="10"
-            VerticalOptions="StartAndExpand">
-
+    <FlexLayout Direction="Column">
+        <HorizontalStackLayout>
             <Image
                 Source="sharex_logo.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
+                HeightRequest="256"
                 HorizontalOptions="Start" />
 
-            <Label
-                Text="UploaderX"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
+            <VerticalStackLayout>
+                <Label
+                    Text="UploaderX"
+                    FontSize="Title"
+                    HorizontalOptions="Start" />
+
+                 <Label
+                    Text="Powered by ShareX"
+                    FontSize="Subtitle"
+                    HorizontalOptions="Start" />
+
+
+            </VerticalStackLayout>
+
+        </HorizontalStackLayout>
 
             <HorizontalStackLayout>
                 <Button x:Name="btnBrowseWatchDir" Text="Browse" Margin="10"></Button>
@@ -31,9 +36,9 @@
                 <Label x:Name="lblUrl"></Label>
             </HorizontalStackLayout>
 
+        <WebView x:Name="wvUrl" VerticalOptions="FillAndExpand"></WebView>
 
-        </VerticalStackLayout>
-    </ScrollView>
+    </FlexLayout>
 
 </ContentPage>
 

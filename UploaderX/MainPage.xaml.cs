@@ -50,9 +50,10 @@ public partial class MainPage : ContentPage
 
     private async void MainPage_UrlReceived(string url)
     {
-        lblUrl.Text = url;
         await Clipboard.Default.SetTextAsync(url);
-    }
+        lblUrl.Text = url;
+        wvUrl.Source = new UrlWebViewSource() { Url = "https://blog.xamarin.com/" };
+        }
 
     private void OnUrlReceived(string url)
     {
@@ -96,7 +97,8 @@ public partial class MainPage : ContentPage
                 WorkerTask task = new WorkerTask(destPath);
                 UploadResult result = task.UploadFile();
                 DebugHelper.Logger.WriteLine(result.URL);
-                MainThread.BeginInvokeOnMainThread(() => {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
                     OnUrlReceived(result.URL);
                 });
             }
