@@ -17,20 +17,32 @@
                     HorizontalOptions="Start" />
 
                  <Label
-                    Text="Powered by ShareX"
+                    Text="Powered by UploadersLib of ShareX"
                     FontSize="Subtitle"
                     HorizontalOptions="Start" />
 
+                <Label Margin="0,10,0,0">ApplicationConfig Path:</Label>
+                <Editor x:Name="txtAppConfigPath" IsReadOnly="True"></Editor>
+                <Label Margin="0,10,0,0">UploadersConfig Path:</Label>
+                <Editor x:Name="txtUploaderConfigPath" IsReadOnly="True"></Editor>
 
             </VerticalStackLayout>
 
         </HorizontalStackLayout>
 
+            <Label>Watch dir:</Label>
             <HorizontalStackLayout>
                 <Button x:Name="btnBrowseWatchDir" Text="Browse" Margin="10"></Button>
                 <Label x:Name="txtWatchDir" Margin="10"></Label>
             </HorizontalStackLayout>
 
+            <Label>Screenshots dir:</Label>
+            <HorizontalStackLayout>
+                <Button x:Name="btnBrowseScreenshotsDir" Text="Browse" Margin="10"></Button>
+                <Label x:Name="txtScreenshotsDir" Margin="10"></Label>
+            </HorizontalStackLayout>
+
+            <Label>URL:</Label>
             <HorizontalStackLayout>
                 <Button x:Name="btnGo" Text="Go" Margin="10" Clicked="btnGo_ClickedAsync"></Button>
                 <Label x:Name="lblUrl"></Label>

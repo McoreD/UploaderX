@@ -13,6 +13,7 @@ public partial class MainPage : ContentPage
 
     private string _watchDir;
     private string _destDir;
+    private string _destSubDir;
 
     public delegate void UrlReceivedEventHandler(string url);
     public event UrlReceivedEventHandler UrlReceived;
@@ -23,8 +24,12 @@ public partial class MainPage : ContentPage
 
         string AppDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
         string AppSettingsDir = Path.Combine(AppDir, "Settings");
-        App.Settings = ApplicationConfig.Load(Path.Combine(AppSettingsDir, "ApplicationConfig.json"));
-        App.UploadersConfig = UploadersConfig.Load(Path.Combine(AppSettingsDir, "UploadersConfig.json"));
+
+        txtAppConfigPath.Text = Path.Combine(AppSettingsDir, "ApplicationConfig.json");
+        App.Settings = ApplicationConfig.Load(txtAppConfigPath.Text);
+
+        txtUploaderConfigPath.Text = Path.Combine(AppSettingsDir, "UploadersConfig.json");
+        App.UploadersConfig = UploadersConfig.Load(txtUploaderConfigPath.Text);
         App.UploadersConfig.SupportDPAPIEncryption = false;
 
         DebugHelper.Init(Path.Combine(AppDir, $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
@@ -33,9 +38,11 @@ public partial class MainPage : ContentPage
         Helpers.CreateDirectoryFromDirectoryPath(_watchDir);
         txtWatchDir.Text = _watchDir;
         _destDir = _watchDir;
-
+        _destSubDir = Path.Combine(Path.Combine(_destDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM"));
+        txtScreenshotsDir.Text = _destSubDir;
+        
         DebugHelper.Logger.WriteLine("Watch Dir: " + _watchDir);
-        DebugHelper.Logger.WriteLine("Destination Dir: " + _destDir);
+        DebugHelper.Logger.WriteLine("Destination Dir: " + _destSubDir);
 
         _watcher = new FileSystemWatcher();
         _watcher.Path = _watchDir;
@@ -52,8 +59,8 @@ public partial class MainPage : ContentPage
     {
         await Clipboard.Default.SetTextAsync(url);
         lblUrl.Text = url;
-        wvUrl.Source = new UrlWebViewSource() { Url = "https://blog.xamarin.com/" };
-        }
+        wvUrl.Source = new UrlWebViewSource() { Url = url };
+    }
 
     private void OnUrlReceived(string url)
     {
@@ -65,7 +72,7 @@ public partial class MainPage : ContentPage
         try
         {
             string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%d_%ra{10}") + Path.GetExtension(e.FullPath);
-            string destPath = Path.Combine(Path.Combine(Path.Combine(_destDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM")), fileName);
+            string destPath = Path.Combine(_destSubDir, fileName);
             FileHelpers.CreateDirectoryFromFilePath(destPath);
             if (!Path.GetFileName(e.FullPath).StartsWith("."))
             {

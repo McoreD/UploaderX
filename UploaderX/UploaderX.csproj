@@ -30,6 +30,9 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
 	  <CreatePackage>false</CreatePackage>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-maccatalyst|AnyCPU'">
+	  <CreatePackage>false</CreatePackage>
+	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -55,9 +58,12 @@
 	  <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Remove="Resources\Images\ShareX_Logo.png" />
+	  <BundleResource Include="Resources\Images\*png" />
 	</ItemGroup>
 	<ItemGroup>
-	  <BundleResource Include="Resources\Images\*png" />
+	  <None Remove="Media\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Media\" />
 	</ItemGroup>
 </Project>
