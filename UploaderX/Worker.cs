@@ -3,6 +3,7 @@ using System.IO;
 using ShareX;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
 using TextCopy;
 
 namespace UploaderX;
@@ -80,6 +81,7 @@ public class Worker : BackgroundService
                 UploadResult result = wt.UploadFile();
                 _logger.LogInformation(result.URL);
                 ClipboardService.SetText(result.URL);
+                // TODO: Clipboard.Default.SetTextAsync(result.URL);
             }
         }
         catch(Exception ex)

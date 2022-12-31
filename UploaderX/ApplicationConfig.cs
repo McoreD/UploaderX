@@ -23,12 +23,13 @@
 
 #endregion License Information (GPL v3)
 
+using Microsoft.Maui.Controls.Shapes;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
+// using System.Drawing;
 using System.Drawing.Design;
 
 namespace ShareX
@@ -59,9 +60,6 @@ namespace ShareX
         public bool TaskbarProgressEnabled = true;
         public bool UseWhiteShareXIcon = false;
         public bool RememberMainFormPosition = false;
-        public Point MainFormPosition = Point.Empty;
-        public bool RememberMainFormSize = false;
-        public Size MainFormSize = Size.Empty;
 
         public bool CheckPreReleaseUpdates = false;
 
@@ -267,24 +265,16 @@ namespace ShareX
 
         #region AutoCapture Form
 
-        public Rectangle AutoCaptureRegion = Rectangle.Empty;
         public decimal AutoCaptureRepeatTime = 60;
         public bool AutoCaptureMinimizeToTray = true;
         public bool AutoCaptureWaitUpload = true;
 
         #endregion AutoCapture Form
 
-        #region ScreenRecord Form
-
-        public Rectangle ScreenRecordRegion = Rectangle.Empty;
-
-        #endregion ScreenRecord Form
 
         #region Actions toolbar
 
         public bool ActionsToolbarRunAtStartup = false;
-
-        public Point ActionsToolbarPosition = Point.Empty;
 
         public bool ActionsToolbarLockPosition = false;
 
