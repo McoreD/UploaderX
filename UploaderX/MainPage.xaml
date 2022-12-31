@@ -26,7 +26,11 @@
                 <Label x:Name="txtWatchDir" Margin="10"></Label>
             </HorizontalStackLayout>
 
-            <Label x:Name="lblUrl"></Label>
+            <HorizontalStackLayout>
+                <Button x:Name="btnGo" Text="Go" Margin="10" Clicked="btnGo_ClickedAsync"></Button>
+                <Label x:Name="lblUrl"></Label>
+            </HorizontalStackLayout>
+
 
         </VerticalStackLayout>
     </ScrollView>

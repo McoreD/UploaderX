@@ -1,4 +1,5 @@
-﻿using HelpersLib;
+﻿using System.Diagnostics;
+using HelpersLib;
 using Microsoft.Extensions.Logging;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
@@ -105,6 +106,12 @@ public partial class MainPage : ContentPage
             DebugHelper.Logger.WriteLine(ex.Message);
         }
 
+    }
+
+    async void btnGo_ClickedAsync(System.Object sender, System.EventArgs e)
+    {
+        Uri uri = new Uri(lblUrl.Text);
+        await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
     }
 }
 
