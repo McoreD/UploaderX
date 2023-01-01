@@ -1,0 +1,94 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 17.0.31611.283
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploadersLib", "UploadersLib\UploadersLib.csproj", "{8402264A-E043-44C5-9801-3519E8976CD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpersLib", "..\HelpersLib\HelpersLib\HelpersLib.csproj", "{5D191C62-608B-4696-A7C4-C9300585FCBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaLib", "MediaLib\MediaLib.csproj", "{B9656BDD-0339-418E-80C5-82648385BC27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploaderX", "UploaderX-avalonia\UploaderX.csproj", "{460351CD-722B-4305-831B-22EEC3D7568A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploaderX.CoreLib", "CoreLib\UploaderX.CoreLib.csproj", "{5E48DCA6-7ACB-4CBC-B701-B226944DF67A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8402264A-E043-44C5-9801-3519E8976CD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8402264A-E043-44C5-9801-3519E8976CD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8402264A-E043-44C5-9801-3519E8976CD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8402264A-E043-44C5-9801-3519E8976CD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D191C62-608B-4696-A7C4-C9300585FCBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D191C62-608B-4696-A7C4-C9300585FCBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D191C62-608B-4696-A7C4-C9300585FCBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D191C62-608B-4696-A7C4-C9300585FCBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9656BDD-0339-418E-80C5-82648385BC27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9656BDD-0339-418E-80C5-82648385BC27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9656BDD-0339-418E-80C5-82648385BC27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9656BDD-0339-418E-80C5-82648385BC27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{460351CD-722B-4305-831B-22EEC3D7568A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{460351CD-722B-4305-831B-22EEC3D7568A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{460351CD-722B-4305-831B-22EEC3D7568A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{460351CD-722B-4305-831B-22EEC3D7568A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E48DCA6-7ACB-4CBC-B701-B226944DF67A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E48DCA6-7ACB-4CBC-B701-B226944DF67A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E48DCA6-7ACB-4CBC-B701-B226944DF67A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E48DCA6-7ACB-4CBC-B701-B226944DF67A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$0.TextStylePolicy = $2
+		$2.inheritsSet = null
+		$2.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $3
+		$3.scope = text/x-csharp
+		$0.TextStylePolicy = $4
+		$4.FileWidth = 80
+		$4.TabsToSpaces = True
+		$4.scope = text/plain
+		$0.TextStylePolicy = $5
+		$5.inheritsSet = null
+		$5.scope = application/xml
+		$0.XmlFormattingPolicy = $6
+		$6.scope = application/xml
+		$0.TextStylePolicy = $7
+		$7.inheritsSet = null
+		$7.scope = application/manifest+xml
+		$0.XmlFormattingPolicy = $8
+		$8.inheritsSet = null
+		$8.scope = application/manifest+xml
+		$0.TextStylePolicy = $9
+		$9.inheritsSet = null
+		$9.scope = text/x-html
+		$0.TextStylePolicy = $10
+		$10.inheritsSet = null
+		$10.scope = text/x-web
+		$0.TextStylePolicy = $11
+		$11.inheritsSet = null
+		$11.scope = text/x-vs
+		$0.TextStylePolicy = $12
+		$12.inheritsSet = null
+		$12.scope = text/x-json
+		$0.TextStylePolicy = $13
+		$13.inheritsSet = null
+		$13.scope = application/xaml
+		$0.XmlFormattingPolicy = $14
+		$14.inheritsSet = null
+		$14.scope = application/xaml
+		$0.StandardHeader = $15
+		version = 0.3.2
+	EndGlobalSection
+EndGlobal
