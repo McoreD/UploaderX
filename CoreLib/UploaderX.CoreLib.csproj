@@ -7,15 +7,14 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<AssemblyName>CoreLib</AssemblyName>
-		<ReleaseVersion>0.3.2</ReleaseVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	  <AssemblyName>UploaderX.CoreLib</AssemblyName>
 	</PropertyGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\HelpersLib\HelpersLib.csproj" />
 	  <ProjectReference Include="..\MediaLib\MediaLib.csproj" />
 	  <ProjectReference Include="..\UploadersLib\UploadersLib.csproj" />
-	  <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />
 	</ItemGroup>
 </Project>

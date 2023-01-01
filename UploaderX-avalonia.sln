@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploadersLib", "UploadersLib\UploadersLib.csproj", "{8402264A-E043-44C5-9801-3519E8976CD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpersLib", "..\HelpersLib\HelpersLib\HelpersLib.csproj", "{5D191C62-608B-4696-A7C4-C9300585FCBC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpersLib", "HelpersLib\HelpersLib.csproj", "{5D191C62-608B-4696-A7C4-C9300585FCBC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaLib", "MediaLib\MediaLib.csproj", "{B9656BDD-0339-418E-80C5-82648385BC27}"
 EndProject

@@ -8,6 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />
+	  <ProjectReference Include="..\HelpersLib\HelpersLib.csproj" />
 	</ItemGroup>
 </Project>

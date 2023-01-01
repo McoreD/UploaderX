@@ -22,11 +22,11 @@
 	  <Folder Include="Compatibility\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />
-	</ItemGroup>
-	<ItemGroup>
 	  <PackageReference Include="MegaApiClient" Version="1.10.3" />
 	  <PackageReference Include="FluentFTP" Version="43.0.1" />
 	  <PackageReference Include="SSH.NET" Version="2020.0.2" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\HelpersLib\HelpersLib.csproj" />
 	</ItemGroup>
 </Project>

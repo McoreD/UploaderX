@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
@@ -27,7 +27,7 @@
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />
+    <ProjectReference Include="..\HelpersLib\HelpersLib.csproj" />
     <ProjectReference Include="..\UploadersLib\UploadersLib.csproj" />
     <ProjectReference Include="..\MediaLib\MediaLib.csproj" />
     <ProjectReference Include="..\CoreLib\UploaderX.CoreLib.csproj" />
