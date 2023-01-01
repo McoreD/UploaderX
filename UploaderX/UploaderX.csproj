@@ -25,4 +25,9 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.18" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />
+    <ProjectReference Include="..\UploadersLib\UploadersLib.csproj" />
+    <ProjectReference Include="..\MediaLib\MediaLib.csproj" />
+  </ItemGroup>
 </Project>
