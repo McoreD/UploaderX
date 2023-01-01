@@ -130,7 +130,7 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
                     }
                 }
 
-                WorkerTask task = new WorkerTask(destPath);
+                Worker task = new Worker(destPath);
                 UploadResult result = task.UploadFile();
                 DebugHelper.Logger.WriteLine(result.URL);
 

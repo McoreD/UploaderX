@@ -7,7 +7,7 @@ using System.IO;
 
 namespace UploaderX
 {
-    public class WorkerTask : IDisposable
+    public class Worker : IDisposable
     {
         public TaskInfo Info { get; private set; }
         public Stream Data { get; private set; }
@@ -15,7 +15,7 @@ namespace UploaderX
         private GenericUploader uploader;
         private TaskReferenceHelper taskReferenceHelper;
 
-        public WorkerTask(string filePath)
+        public Worker(string filePath)
         {
             Info = new TaskInfo();
             Info.FilePath = filePath;
