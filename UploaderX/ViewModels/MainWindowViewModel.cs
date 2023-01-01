@@ -15,16 +15,19 @@ namespace UploaderX.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
 {
-    public string Greeting => "Welcome to Avalonia!";
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
     public string AppConfigPath { get; set; }
     public string UploadersConfigPath { get; set; }
     public string WatchDir { get; set; }
     public string DestDir { get; set; }
     public string DestSubDir { get; set; }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    private string _url = "http://";
+    private string _url = "https://";
     public string Url
     {
         get => _url;
@@ -36,12 +39,7 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
         }
     }
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    string AppDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
+    readonly string AppDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
 
     private FileSystemWatcher _watcher;
     public delegate void UrlReceivedEventHandler(string url);

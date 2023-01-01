@@ -15,12 +15,12 @@
     </Design.DataContext>
 
     <StackPanel>
-        <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Text="{Binding AppConfigPath}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtAppConfigPath"/>
         <TextBlock Text="{Binding UploadersConfigPath}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtUploadersConfigPath"/>
         <TextBlock Text="{Binding WatchDir}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtWatchDir"/>
         <TextBlock Text="{Binding DestSubDir}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtDestDir"/>
         <TextBlock Text="{Binding Url}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtUrl"/>
+        <Button x:Name="btnGo">Go</Button>
     </StackPanel>
 
 </Window>

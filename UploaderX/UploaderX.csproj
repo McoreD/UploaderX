@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ReleaseVersion>0.3.0</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>
