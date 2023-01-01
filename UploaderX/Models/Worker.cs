@@ -11,7 +11,6 @@ namespace UploaderX
 {
     public class Worker : IDisposable
     {
-        private string _configDir { get; set; }
         private ApplicationConfig? _appConfig { get; set; }
         private UploadersConfig? _uploadersConfig { get; set; }
 
@@ -20,6 +19,8 @@ namespace UploaderX
         public string WatchDir { get; set; }
         public string DestDir { get; set; }
         public string DestSubDir { get; set; }
+
+        string _ffmpegDir;
 
         public TaskInfo Info { get; private set; }
         public Stream Data { get; private set; }
@@ -34,6 +35,7 @@ namespace UploaderX
 
         public Worker(string configDir)
         {
+            _ffmpegDir = Path.Combine(configDir, "Tools");
             string settingsDir = Path.Combine(configDir, "Settings");
             AppConfigPath = Path.Combine(settingsDir, "ApplicationConfig.json");
             UploadersConfigPath = Path.Combine(settingsDir, "UploadersConfig.json");
@@ -42,11 +44,85 @@ namespace UploaderX
             _uploadersConfig = UploadersConfig.Load(UploadersConfigPath);
             _uploadersConfig.SupportDPAPIEncryption = false;
 
-            WatchDir = Directory.Exists(_appConfig.CustomScreenshotsPath2) ? _appConfig.CustomScreenshotsPath2 : Path.Combine(_configDir, "Watch Folder");
+            WatchDir = Directory.Exists(_appConfig.CustomScreenshotsPath2) ? _appConfig.CustomScreenshotsPath2 : Path.Combine(configDir, "Watch Folder");
             DestDir = WatchDir;
             DestSubDir = Path.Combine(Path.Combine(DestDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM"));
 
             Helpers.CreateDirectoryFromDirectoryPath(WatchDir);
+        }
+
+        internal void Watch()
+        {
+            _watcher = new FileSystemWatcher();
+            _watcher.Path = WatchDir;
+
+            _watcher.NotifyFilter = NotifyFilters.FileName;
+            _watcher.Created += OnCreated;
+            _watcher.EnableRaisingEvents = true;
+        }
+
+        private async void OnCreated(object sender, FileSystemEventArgs e)
+        {
+            try
+            {
+                string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%d_%ra{10}") + Path.GetExtension(e.FullPath);
+                string destPath = Path.Combine(DestSubDir, fileName);
+                FileHelpers.CreateDirectoryFromFilePath(destPath);
+                if (!Path.GetFileName(e.FullPath).StartsWith("."))
+                {
+                    int successCount = 0;
+                    long previousSize = -1;
+
+                    await Helpers.WaitWhileAsync(() =>
+                    {
+                        if (!FileHelpers.IsFileLocked(e.FullPath))
+                        {
+                            long currentSize = FileHelpers.GetFileSize(e.FullPath);
+
+                            if (currentSize > 0 && currentSize == previousSize)
+                            {
+                                successCount++;
+                            }
+
+                            previousSize = currentSize;
+                            return successCount < 4;
+                        }
+
+                        previousSize = -1;
+                        return true;
+                    }, 250, 5000, () =>
+                    {
+                        File.Move(e.FullPath, destPath, overwrite: true);
+                    }, 1000);
+
+                    if (Path.GetExtension(destPath).ToLower().Equals(".mov"))
+                    {
+                        string ffmpegPath = Path.Combine(_ffmpegDir, "ffmpeg");
+                        FFmpegCLIManager ffmpeg = new FFmpegCLIManager(ffmpegPath);
+                        string mp4Path = Path.ChangeExtension(destPath, "mp4");
+                        string args = $"-i \"{destPath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
+                        if (ffmpeg.Run(args))
+                        {
+                            FileHelpers.DeleteFile(destPath);
+                            destPath = mp4Path;
+                        }
+                    }
+
+                    Init(destPath);
+                    UploadResult result = UploadFile();
+                    DebugHelper.Logger.WriteLine(result.URL);
+
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        OnUrlReceived(result.URL);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugHelper.Logger.WriteLine(ex.Message);
+            }
+
         }
 
         private void Init(string filePath)
@@ -131,80 +207,6 @@ namespace UploaderX
             UrlReceived?.Invoke(url);
         }
 
-        internal void Watch()
-        {
-            _watcher = new FileSystemWatcher();
-            _watcher.Path = WatchDir;
-
-            _watcher.NotifyFilter = NotifyFilters.FileName;
-            _watcher.Created += OnCreated;
-            _watcher.EnableRaisingEvents = true;
-        }
-
-        async void OnCreated(object sender, FileSystemEventArgs e)
-        {
-            try
-            {
-                string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%d_%ra{10}") + Path.GetExtension(e.FullPath);
-                string destPath = Path.Combine(DestSubDir, fileName);
-                FileHelpers.CreateDirectoryFromFilePath(destPath);
-                if (!Path.GetFileName(e.FullPath).StartsWith("."))
-                {
-                    int successCount = 0;
-                    long previousSize = -1;
-
-                    await Helpers.WaitWhileAsync(() =>
-                    {
-                        if (!FileHelpers.IsFileLocked(e.FullPath))
-                        {
-                            long currentSize = FileHelpers.GetFileSize(e.FullPath);
-
-                            if (currentSize > 0 && currentSize == previousSize)
-                            {
-                                successCount++;
-                            }
-
-                            previousSize = currentSize;
-                            return successCount < 4;
-                        }
-
-                        previousSize = -1;
-                        return true;
-                    }, 250, 5000, () =>
-                    {
-                        File.Move(e.FullPath, destPath, overwrite: true);
-                    }, 1000);
-
-                    if (Path.GetExtension(destPath).ToLower().Equals(".mov"))
-                    {
-                        string ffmpegDir = Path.Combine(_configDir, "Tools");
-                        string ffmpegPath = Path.Combine(ffmpegDir, "ffmpeg");
-                        FFmpegCLIManager ffmpeg = new FFmpegCLIManager(ffmpegPath);
-                        string mp4Path = Path.ChangeExtension(destPath, "mp4");
-                        string args = $"-i \"{destPath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
-                        if (ffmpeg.Run(args))
-                        {
-                            FileHelpers.DeleteFile(destPath);
-                            destPath = mp4Path;
-                        }
-                    }
-
-                    Init(destPath);
-                    UploadResult result = UploadFile();
-                    DebugHelper.Logger.WriteLine(result.URL);
-
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        OnUrlReceived(result.URL);
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                DebugHelper.Logger.WriteLine(ex.Message);
-            }
-
-        }
     }
 }
 

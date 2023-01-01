@@ -38,17 +38,17 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
         }
     }
 
-    readonly string AppDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
+    readonly string _configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
 
     private Worker _worker;
 
     public MainWindowViewModel()
     {
-        DebugHelper.Init(Path.Combine(Path.Combine(AppDir, "Logs"), $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
+        DebugHelper.Init(Path.Combine(Path.Combine(_configDir, "Logs"), $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
 
-        string AppSettingsDir = Path.Combine(AppDir, "Settings");
+        string AppSettingsDir = Path.Combine(_configDir, "Settings");
 
-        _worker = new Worker(AppDir);
+        _worker = new Worker(_configDir);
         _worker.UrlReceived += MainWindowViewModel_UrlReceivedAsync;
         _worker.Watch();
 
