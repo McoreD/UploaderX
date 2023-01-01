@@ -75,36 +75,8 @@ namespace ShareX
         public bool UseDefaultImageSettings = true;
         public TaskSettingsImage ImageSettings = new TaskSettingsImage();
 
-        [JsonIgnore]
-        public TaskSettingsImage ImageSettingsReference
-        {
-            get
-            {
-                if (UseDefaultImageSettings)
-                {
-                    return App.DefaultTaskSettings.ImageSettings;
-                }
-
-                return TaskSettingsReference.ImageSettings;
-            }
-        }
-
         public bool UseDefaultCaptureSettings = true;
         public TaskSettingsCapture CaptureSettings = new TaskSettingsCapture();
-
-        [JsonIgnore]
-        public TaskSettingsCapture CaptureSettingsReference
-        {
-            get
-            {
-                if (UseDefaultCaptureSettings)
-                {
-                    return App.DefaultTaskSettings.CaptureSettings;
-                }
-
-                return TaskSettingsReference.CaptureSettings;
-            }
-        }
 
         public bool UseDefaultUploadSettings = true;
         public TaskSettingsUpload UploadSettings = new TaskSettingsUpload();
@@ -114,19 +86,6 @@ namespace ShareX
         public bool UseDefaultToolsSettings = true;
         public TaskSettingsTools ToolsSettings = new TaskSettingsTools();
 
-        [JsonIgnore]
-        public TaskSettingsTools ToolsSettingsReference
-        {
-            get
-            {
-                if (UseDefaultToolsSettings)
-                {
-                    return App.DefaultTaskSettings.ToolsSettings;
-                }
-
-                return TaskSettingsReference.ToolsSettings;
-            }
-        }
 
         public bool UseDefaultAdvancedSettings = true;
         public TaskSettingsAdvanced AdvancedSettings = new TaskSettingsAdvanced();
@@ -142,82 +101,6 @@ namespace ShareX
         }
 
         public bool WatchFolderEnabled { get; private set; }
-
-        public static TaskSettings GetDefaultTaskSettings()
-        {
-            TaskSettings taskSettings = new TaskSettings();
-            taskSettings.SetDefaultSettings();
-            taskSettings.TaskSettingsReference = App.DefaultTaskSettings;
-            return taskSettings;
-        }
-
-        public static TaskSettings GetSafeTaskSettings(TaskSettings taskSettings)
-        {
-            TaskSettings safeTaskSettings;
-
-            if (taskSettings.IsUsingDefaultSettings && App.DefaultTaskSettings != null)
-            {
-                safeTaskSettings = App.DefaultTaskSettings.Copy();
-                safeTaskSettings.Description = taskSettings.Description;
-            }
-            else
-            {
-                safeTaskSettings = taskSettings.Copy();
-                safeTaskSettings.SetDefaultSettings();
-            }
-
-            safeTaskSettings.TaskSettingsReference = taskSettings;
-            return safeTaskSettings;
-        }
-
-        private void SetDefaultSettings()
-        {
-            if (App.DefaultTaskSettings != null)
-            {
-                TaskSettings defaultTaskSettings = App.DefaultTaskSettings.Copy();
-
-                if (UseDefaultDestinations)
-                {
-                    ImageDestination = defaultTaskSettings.ImageDestination;
-                    ImageFileDestination = defaultTaskSettings.ImageFileDestination;
-                    TextDestination = defaultTaskSettings.TextDestination;
-                    TextFileDestination = defaultTaskSettings.TextFileDestination;
-                    FileDestination = defaultTaskSettings.FileDestination;
-                    URLShortenerDestination = defaultTaskSettings.URLShortenerDestination;
-                    URLSharingServiceDestination = defaultTaskSettings.URLSharingServiceDestination;
-                }
-
-                if (UseDefaultGeneralSettings)
-                {
-                    GeneralSettings = defaultTaskSettings.GeneralSettings;
-                }
-
-                if (UseDefaultImageSettings)
-                {
-                    ImageSettings = defaultTaskSettings.ImageSettings;
-                }
-
-                if (UseDefaultCaptureSettings)
-                {
-                    CaptureSettings = defaultTaskSettings.CaptureSettings;
-                }
-
-                if (UseDefaultUploadSettings)
-                {
-                    UploadSettings = defaultTaskSettings.UploadSettings;
-                }
-
-                if (UseDefaultToolsSettings)
-                {
-                    ToolsSettings = defaultTaskSettings.ToolsSettings;
-                }
-
-                if (UseDefaultAdvancedSettings)
-                {
-                    AdvancedSettings = defaultTaskSettings.AdvancedSettings;
-                }
-            }
-        }
 
         public FileDestination GetFileDestinationByDataType(EDataType dataType)
         {

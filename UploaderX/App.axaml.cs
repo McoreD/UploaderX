@@ -10,10 +10,6 @@ namespace UploaderX;
 
 public partial class App : Application
 {
-    internal static ApplicationConfig? Settings { get; set; }
-    internal static TaskSettings? DefaultTaskSettings { get; set; }
-    internal static UploadersConfig? UploadersConfig { get; set; }
-
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
