@@ -15,7 +15,7 @@ public partial class MainPage : ContentPage
         txtAppPath.Text = Process.GetCurrentProcess().MainModule.FileName;
 
         _worker = new Worker(_configDir);
-        _worker.UrlReceived += this._worker_UrlReceived; ;
+        _worker.UrlReceived += _worker_UrlReceived; ;
         _worker.Watch();
      
         txtAppConfigPath.Text = _worker.AppConfigPath;
