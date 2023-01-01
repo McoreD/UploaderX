@@ -28,7 +28,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 
-namespace ShareX.MediaLib
+namespace MediaLib
 {
     public class VideoInfo
     {

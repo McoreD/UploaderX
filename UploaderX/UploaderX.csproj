@@ -56,14 +56,9 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\UploadersLib\UploadersLib.csproj" />
 	  <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />
+	  <ProjectReference Include="..\MediaLib\MediaLib.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <BundleResource Include="Resources\Images\*png" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="Media\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Media\" />
 	</ItemGroup>
 </Project>
