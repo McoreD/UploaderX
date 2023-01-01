@@ -112,6 +112,7 @@ public partial class MainPage : ContentPage
                     string args = $"-i \"{destPath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
                     if (ffmpeg.Run(args))
                     {
+                        FileHelpers.DeleteFile(destPath);
                         destPath = mp4Path;
                     }
                 }           
