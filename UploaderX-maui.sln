@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpersLib", "..\HelpersLib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaLib", "MediaLib\MediaLib.csproj", "{B9656BDD-0339-418E-80C5-82648385BC27}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploaderX.CoreLib", "CoreLib\UploaderX.CoreLib.csproj", "{E6FD9BA7-6379-4C1C-8963-C27F41169EC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{B9656BDD-0339-418E-80C5-82648385BC27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9656BDD-0339-418E-80C5-82648385BC27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9656BDD-0339-418E-80C5-82648385BC27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6FD9BA7-6379-4C1C-8963-C27F41169EC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6FD9BA7-6379-4C1C-8963-C27F41169EC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6FD9BA7-6379-4C1C-8963-C27F41169EC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6FD9BA7-6379-4C1C-8963-C27F41169EC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

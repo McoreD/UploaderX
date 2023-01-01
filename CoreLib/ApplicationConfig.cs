@@ -23,7 +23,6 @@
 
 #endregion License Information (GPL v3)
 
-using Microsoft.Maui.Controls.Shapes;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
 using System;
