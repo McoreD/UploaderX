@@ -14,6 +14,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UploadersLib\UploadersLib.csproj" />
+    <ProjectReference Include="..\MediaLib\MediaLib.csproj" />
+    <ProjectReference Include="..\CoreLib\UploaderX.CoreLib.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="TextCopy" />

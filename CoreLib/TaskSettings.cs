@@ -48,10 +48,8 @@ namespace ShareX
         public string Description = "";
 
         public bool UseDefaultAfterCaptureJob = true;
-        public AfterCaptureTasks AfterCaptureJob = AfterCaptureTasks.CopyImageToClipboard | AfterCaptureTasks.SaveImageToFile | AfterCaptureTasks.UploadImageToHost;
 
         public bool UseDefaultAfterUploadJob = true;
-        public AfterUploadTasks AfterUploadJob = AfterUploadTasks.CopyURLToClipboard;
 
         public bool UseDefaultDestinations = true;
         public ImageDestination ImageDestination = ImageDestination.Imgur;
@@ -77,36 +75,8 @@ namespace ShareX
         public bool UseDefaultImageSettings = true;
         public TaskSettingsImage ImageSettings = new TaskSettingsImage();
 
-        [JsonIgnore]
-        public TaskSettingsImage ImageSettingsReference
-        {
-            get
-            {
-                if (UseDefaultImageSettings)
-                {
-                    return Program.DefaultTaskSettings.ImageSettings;
-                }
-
-                return TaskSettingsReference.ImageSettings;
-            }
-        }
-
         public bool UseDefaultCaptureSettings = true;
         public TaskSettingsCapture CaptureSettings = new TaskSettingsCapture();
-
-        [JsonIgnore]
-        public TaskSettingsCapture CaptureSettingsReference
-        {
-            get
-            {
-                if (UseDefaultCaptureSettings)
-                {
-                    return Program.DefaultTaskSettings.CaptureSettings;
-                }
-
-                return TaskSettingsReference.CaptureSettings;
-            }
-        }
 
         public bool UseDefaultUploadSettings = true;
         public TaskSettingsUpload UploadSettings = new TaskSettingsUpload();
@@ -116,26 +86,9 @@ namespace ShareX
         public bool UseDefaultToolsSettings = true;
         public TaskSettingsTools ToolsSettings = new TaskSettingsTools();
 
-        [JsonIgnore]
-        public TaskSettingsTools ToolsSettingsReference
-        {
-            get
-            {
-                if (UseDefaultToolsSettings)
-                {
-                    return Program.DefaultTaskSettings.ToolsSettings;
-                }
-
-                return TaskSettingsReference.ToolsSettings;
-            }
-        }
 
         public bool UseDefaultAdvancedSettings = true;
         public TaskSettingsAdvanced AdvancedSettings = new TaskSettingsAdvanced();
-
-        public bool WatchFolderEnabled = false;
-
-        public List<WatchFolderSettings> WatchFolderList = new List<WatchFolderSettings>();
 
         public bool IsUsingDefaultSettings
         {
@@ -147,91 +100,7 @@ namespace ShareX
             }
         }
 
-        public static TaskSettings GetDefaultTaskSettings()
-        {
-            TaskSettings taskSettings = new TaskSettings();
-            taskSettings.SetDefaultSettings();
-            taskSettings.TaskSettingsReference = Program.DefaultTaskSettings;
-            return taskSettings;
-        }
-
-        public static TaskSettings GetSafeTaskSettings(TaskSettings taskSettings)
-        {
-            TaskSettings safeTaskSettings;
-
-            if (taskSettings.IsUsingDefaultSettings && Program.DefaultTaskSettings != null)
-            {
-                safeTaskSettings = Program.DefaultTaskSettings.Copy();
-                safeTaskSettings.Description = taskSettings.Description;
-            }
-            else
-            {
-                safeTaskSettings = taskSettings.Copy();
-                safeTaskSettings.SetDefaultSettings();
-            }
-
-            safeTaskSettings.TaskSettingsReference = taskSettings;
-            return safeTaskSettings;
-        }
-
-        private void SetDefaultSettings()
-        {
-            if (Program.DefaultTaskSettings != null)
-            {
-                TaskSettings defaultTaskSettings = Program.DefaultTaskSettings.Copy();
-
-                if (UseDefaultAfterCaptureJob)
-                {
-                    AfterCaptureJob = defaultTaskSettings.AfterCaptureJob;
-                }
-
-                if (UseDefaultAfterUploadJob)
-                {
-                    AfterUploadJob = defaultTaskSettings.AfterUploadJob;
-                }
-
-                if (UseDefaultDestinations)
-                {
-                    ImageDestination = defaultTaskSettings.ImageDestination;
-                    ImageFileDestination = defaultTaskSettings.ImageFileDestination;
-                    TextDestination = defaultTaskSettings.TextDestination;
-                    TextFileDestination = defaultTaskSettings.TextFileDestination;
-                    FileDestination = defaultTaskSettings.FileDestination;
-                    URLShortenerDestination = defaultTaskSettings.URLShortenerDestination;
-                    URLSharingServiceDestination = defaultTaskSettings.URLSharingServiceDestination;
-                }
-
-                if (UseDefaultGeneralSettings)
-                {
-                    GeneralSettings = defaultTaskSettings.GeneralSettings;
-                }
-
-                if (UseDefaultImageSettings)
-                {
-                    ImageSettings = defaultTaskSettings.ImageSettings;
-                }
-
-                if (UseDefaultCaptureSettings)
-                {
-                    CaptureSettings = defaultTaskSettings.CaptureSettings;
-                }
-
-                if (UseDefaultUploadSettings)
-                {
-                    UploadSettings = defaultTaskSettings.UploadSettings;
-                }
-
-                if (UseDefaultToolsSettings)
-                {
-                    ToolsSettings = defaultTaskSettings.ToolsSettings;
-                }
-
-                if (UseDefaultAdvancedSettings)
-                {
-                    AdvancedSettings = defaultTaskSettings.AdvancedSettings;
-                }
-            }
-        }
+        public bool WatchFolderEnabled { get; private set; }
 
         public FileDestination GetFileDestinationByDataType(EDataType dataType)
         {
@@ -258,9 +127,6 @@ namespace ShareX
         public float ToastWindowDuration = 3f;
         public float ToastWindowFadeDuration = 1f;
 
-        public ToastClickAction ToastWindowLeftClickAction = ToastClickAction.OpenUrl;
-        public ToastClickAction ToastWindowRightClickAction = ToastClickAction.CloseNotification;
-        public ToastClickAction ToastWindowMiddleClickAction = ToastClickAction.AnnotateImage;
         public bool ToastWindowAutoHide = true;
         public bool UseCustomCaptureSound = false;
         public string CustomCaptureSoundPath = "";
@@ -270,8 +136,6 @@ namespace ShareX
         public string CustomErrorSoundPath = "";
         public bool DisableNotifications = false;
         public bool DisableNotificationsOnFullscreen = false;
-
-        public PopUpNotificationType PopUpNotification = PopUpNotificationType.ToastNotification;
 
         #endregion
     }
@@ -287,7 +151,6 @@ namespace ShareX
         public bool ImageAutoUseJPEG = true;
         public int ImageAutoUseJPEGSize = 2048;
         public bool ImageAutoJPEGQuality = false;
-        public FileExistAction FileExistAction = FileExistAction.Ask;
 
         #endregion Image / General
 

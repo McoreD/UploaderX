@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<AssemblyName>CoreLib</AssemblyName>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	  <AssemblyName>UploaderX.CoreLib</AssemblyName>
+	</PropertyGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\MediaLib\MediaLib.csproj" />
+	  <ProjectReference Include="..\UploadersLib\UploadersLib.csproj" />
+	  <ProjectReference Include="..\..\HelpersLib\HelpersLib\HelpersLib.csproj" />
+	</ItemGroup>
+</Project>
