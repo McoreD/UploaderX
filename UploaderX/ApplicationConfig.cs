@@ -32,7 +32,7 @@ using System.ComponentModel;
 // using System.Drawing;
 using System.Drawing.Design;
 
-namespace ShareX
+namespace UploaderX
 {
     public class ApplicationConfig : SettingsBase<ApplicationConfig>
     {
@@ -60,6 +60,8 @@ namespace ShareX
         public bool TaskbarProgressEnabled = true;
         public bool UseWhiteShareXIcon = false;
         public bool RememberMainFormPosition = false;
+
+        public bool RememberMainFormSize = false;
 
         public bool CheckPreReleaseUpdates = false;
 
@@ -91,7 +93,6 @@ namespace ShareX
 
         // Thumbnail view
         public bool ShowThumbnailTitle = true;
-        public Size ThumbnailSize = new Size(200, 150);
 
         // List view
         public bool ShowColumns = true;
@@ -282,10 +283,6 @@ namespace ShareX
 
         #endregion Actions toolbar
 
-        #region Color Picker Form
 
-        public List<Color> RecentColors = new List<Color>();
-
-        #endregion Color Picker Form
     }
 }

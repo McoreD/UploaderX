@@ -1,10 +1,8 @@
-{
+﻿{
   "profiles": {
-    "UploaderX": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Development"
-      }
+    "Windows Machine": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": false
     }
   }
 }
