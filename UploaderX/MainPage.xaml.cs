@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
 using HelpersLib;
+using MediaLib;
 using Microsoft.Extensions.Logging;
 using ShareX.HelpersLib;
 using ShareX.UploadersLib;
+using UploaderX.Platforms.MacCatalyst;
 
 namespace UploaderX;
 
@@ -22,9 +24,9 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         InitializeComponent();
-
+        txtAppPath.Text = Process.GetCurrentProcess().MainModule.FileName;
         string AppSettingsDir = Path.Combine(AppDir, "Settings");
-
+        
         txtAppConfigPath.Text = Path.Combine(AppSettingsDir, "ApplicationConfig.json");
         App.Settings = ApplicationConfig.Load(txtAppConfigPath.Text);
 
@@ -60,6 +62,7 @@ public partial class MainPage : ContentPage
         Clipboard.Default.SetTextAsync(url);
         lblUrl.Text = url;
         wvUrl.Source = new UrlWebViewSource() { Url = url };
+        wvUrl.Reload();
     }
 
     private void OnUrlReceived(string url)
@@ -104,7 +107,7 @@ public partial class MainPage : ContentPage
                 if (Path.GetExtension(destPath).ToLower().Equals(".mov"))
                 {
                     string ffmpegPath = Path.Combine(AppDir, "ffmpeg");
-                    ShareX.MediaLib.FFmpegCLIManager ffmpeg = new ShareX.MediaLib.FFmpegCLIManager(ffmpegPath);
+                    FFmpegCLIManager ffmpeg = new FFmpegCLIManager(ffmpegPath);
                     string mp4Path = Path.ChangeExtension(destPath, "mp4");
                     string args = $"-i \"{destPath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
                     if (ffmpeg.Run(args))
@@ -133,6 +136,12 @@ public partial class MainPage : ContentPage
     {
         Uri uri = new Uri(lblUrl.Text);
         await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+    }
+
+    async void btnBrowseWatchDir_Clicked(System.Object sender, System.EventArgs e)
+    {
+        IFolderPicker folderPicker = new FolderPicker(); //TODO: Result returns file://
+        txtWatchDir.Text = await folderPicker.PickFolder();
     }
 }
 
