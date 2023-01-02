@@ -1,5 +1,5 @@
 # UploaderX
-macOS implementation of UploaderX
+Cross-platform implementation of ShareX.UploadersLib
 
 # Getting Started
 - Grab a copy of your `UploadersConfig.json` from ShareX
@@ -28,3 +28,13 @@ e.g.
  "CustomScreenshotsPath2": "C:\\Users\\mike\\Pictures\\Screenshots"
 }
 ```
+
+#Features
+- Supports Amazon S3 as long as settings are configured in `UploadersConfig.json`
+- Supports Imgur if no json file is configured
+- Supports converting `mov` to `mp4` if `ffmpeg` is available in `Tools` folder
+
+#FAQ
+## Where are UploaderX app data saved?
+- In MAUI app, it is saved in ~/Documents/UploaderX
+- In Avalonia app, it is saved in ~/UploaderX
