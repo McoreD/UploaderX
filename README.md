@@ -29,12 +29,15 @@ e.g.
 }
 ```
 
-#Features
+# Features
 - Supports Amazon S3 as long as settings are configured in `UploadersConfig.json`
 - Supports Imgur if no json file is configured
 - Supports converting `mov` to `mp4` if `ffmpeg` is available in `Tools` folder
 
-#FAQ
+# FAQ
 ## Where are UploaderX app data saved?
-- In MAUI app, it is saved in ~/Documents/UploaderX
-- In Avalonia app, it is saved in ~/UploaderX
+- In MAUI app, it is saved in `~/Documents/UploaderX`
+- In Avalonia app, it is saved in `~/UploaderX`
+
+## Where is the Watch Folder is no json file is configured?
+- Watch Folder is created in the app data folder e.g. `~/Documents/UploaderX/Watch Folder`
