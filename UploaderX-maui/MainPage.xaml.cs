@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using UploaderX.Platforms.MacCatalyst;
 
 namespace UploaderX;
 
@@ -43,8 +42,8 @@ public partial class MainPage : ContentPage
 
     async void btnBrowseWatchDir_Clicked(System.Object sender, System.EventArgs e)
     {
-        IFolderPicker folderPicker = new FolderPicker(); //TODO: Result returns file://
-        txtWatchDir.Text = await folderPicker.PickFolder();
+        //IFolderPicker folderPicker = new FolderPicker(); //TODO: Result returns file://
+        // txtWatchDir.Text = await folderPicker.PickFolder();
     }
 }
 
