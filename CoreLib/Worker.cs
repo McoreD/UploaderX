@@ -65,7 +65,7 @@ namespace UploaderX
         {
             try
             {
-                string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%d_%ra{10}") + Path.GetExtension(e.FullPath);
+                string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%dT%h%mi%s_%ra{6}") + Path.GetExtension(e.FullPath);
                 string destPath = Path.Combine(DestSubDir, fileName);
                 FileHelpers.CreateDirectoryFromFilePath(destPath);
                 if (!Path.GetFileName(e.FullPath).StartsWith("."))

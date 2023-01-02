@@ -5,6 +5,7 @@
     <UserSecretsId>ea92db3c-e264-44ca-a51c-6823bced48a4</UserSecretsId>
     <AssemblyName>HelpersLib</AssemblyName>
     <UseMaui>true</UseMaui>
+    <ReleaseVersion>0.4.0</ReleaseVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
