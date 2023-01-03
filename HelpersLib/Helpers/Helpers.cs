@@ -429,9 +429,9 @@ namespace ShareX.HelpersLib
         {
             if (!string.IsNullOrEmpty(folderPath) && Directory.Exists(folderPath))
             {
-                if (!folderPath.EndsWith(@"\"))
+                if (!folderPath.EndsWith(Path.DirectorySeparatorChar))
                 {
-                    folderPath += @"\";
+                    folderPath += Path.DirectorySeparatorChar;
                 }
 
                 try
@@ -440,6 +440,7 @@ namespace ShareX.HelpersLib
                     {
                         ProcessStartInfo psi = new ProcessStartInfo()
                         {
+                            UseShellExecute = true,
                             FileName = folderPath
                         };
 
