@@ -17,7 +17,7 @@
                     HorizontalOptions="Start" />
 
                  <Label
-                    Text="Powered by UploadersLib of ShareX"
+                    Text="Cross-platform implementation of ShareX.UploadersLib"
                     FontSize="Subtitle"
                     HorizontalOptions="Start" />
 
@@ -32,23 +32,32 @@
 
         </HorizontalStackLayout>
 
-            <Label>Watch dir:</Label>
-            <HorizontalStackLayout>
-                <Button x:Name="btnBrowseWatchDir" Text="Browse" Margin="10" Clicked="btnBrowseWatchDir_Clicked"></Button>
-                <Label x:Name="txtWatchDir" Margin="10"></Label>
-            </HorizontalStackLayout>
+        <Label>Watch dir:</Label>
+        <HorizontalStackLayout>
+            <Button x:Name="btnBrowseWatchDir" Text="Open watch folder" Margin="10" Clicked="btnBrowseWatchDir_Clicked"></Button>
+            <Label x:Name="txtWatchDir" Margin="10"></Label>
+        </HorizontalStackLayout>
 
-            <Label>Screenshots dir:</Label>
-            <HorizontalStackLayout>
-                <Button x:Name="btnBrowseScreenshotsDir" Text="Browse" Margin="10"></Button>
-                <Label x:Name="txtScreenshotsDir" Margin="10"></Label>
-            </HorizontalStackLayout>
+        <Label>Screenshots dir:</Label>
+        <HorizontalStackLayout>
+            <Button
+                x:Name="btnBrowseScreenshotsDir"
+                Text="Open screenshots folder"
+                Margin="10"
+                Clicked="btnBrowseScreenshotsDir_Clicked"></Button>
+            <Label
+                x:Name="txtScreenshotsDir"
+                Margin="10"></Label>
+        </HorizontalStackLayout>
 
-            <Label>URL:</Label>
-            <HorizontalStackLayout>
-                <Button x:Name="btnGo" Text="Go" Margin="10" Clicked="btnGo_ClickedAsync"></Button>
-                <Label x:Name="lblUrl"></Label>
-            </HorizontalStackLayout>
+        <Label>URL:</Label>
+        <HorizontalStackLayout>
+            <Button x:Name="btnGo"
+                    Text="Open URL"
+                    Margin="10"
+                    Clicked="btnGo_ClickedAsync"></Button>
+            <Label x:Name="lblUrl"></Label>
+        </HorizontalStackLayout>
 
         <WebView x:Name="wvUrl" VerticalOptions="FillAndExpand"></WebView>
 

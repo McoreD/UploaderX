@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using ShareX.HelpersLib;
 
 namespace UploaderX;
 
@@ -30,7 +31,6 @@ public partial class MainPage : ContentPage
             Clipboard.Default.SetTextAsync(url);
             lblUrl.Text = url;
             wvUrl.Source = new UrlWebViewSource() { Url = url };
-            wvUrl.Reload();
         });
     }
 
@@ -42,8 +42,15 @@ public partial class MainPage : ContentPage
 
     async void btnBrowseWatchDir_Clicked(System.Object sender, System.EventArgs e)
     {
-        //IFolderPicker folderPicker = new FolderPicker(); //TODO: Result returns file://
+        //TODO: Result returns file://
+        //IFolderPicker folderPicker = new FolderPicker(); 
         // txtWatchDir.Text = await folderPicker.PickFolder();
+        Helpers.OpenFolder(txtWatchDir.Text);
+    }
+
+    void btnBrowseScreenshotsDir_Clicked(System.Object sender, System.EventArgs e)
+    {
+        Helpers.OpenFolder(txtScreenshotsDir.Text);
     }
 }
 

@@ -99,12 +99,15 @@ namespace UploaderX
                     {
                         string ffmpegPath = Path.Combine(_ffmpegDir, "ffmpeg");
                         FFmpegCLIManager ffmpeg = new FFmpegCLIManager(ffmpegPath);
-                        string mp4Path = Path.ChangeExtension(destPath, "mp4");
-                        string args = $"-i \"{destPath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
-                        if (ffmpeg.Run(args))
+                        if (File.Exists(ffmpegPath))
                         {
-                            FileHelpers.DeleteFile(destPath);
-                            destPath = mp4Path;
+                            string mp4Path = Path.ChangeExtension(destPath, "mp4");
+                            string args = $"-i \"{destPath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
+                            if (ffmpeg.Run(args))
+                            {
+                                FileHelpers.DeleteFile(destPath);
+                                destPath = mp4Path;
+                            }
                         }
                     }
 
