@@ -13,8 +13,7 @@ public partial class MainWindow : Window
 {
     private TextBlock _DropState;
     private TextBlock _DragState;
-    private Border _DragMe;
-    private int DragCount = 0;
+    private TextBlock _Url;
 
     public MainWindow()
     {
@@ -25,9 +24,7 @@ public partial class MainWindow : Window
 
         _DropState = this.Find<TextBlock>("DropState");
         _DragState = this.Find<TextBlock>("DragState");
-        _DragMe = this.Find<Border>("DragMe");
-
-        _DragMe.PointerPressed += DoDrag;
+        _Url = this.Find<TextBlock>("txtUrl");
 
         AddHandler(DragDrop.DropEvent, Drop);
         AddHandler(DragDrop.DragOverEvent, DragOver);
@@ -36,24 +33,6 @@ public partial class MainWindow : Window
     private async void BtnGo_ClickAsync(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         Uri uri = new Uri(txtUrl.Text);
-    }
-
-    private async void DoDrag(object sender, Avalonia.Input.PointerPressedEventArgs e)
-    {
-        Debug.WriteLine("DoDrag");
-        DataObject dragData = new DataObject();
-        dragData.Set(DataFormats.Text, $"You have dragged text {++DragCount} times");
-
-        var result = await DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy);
-        switch (result)
-        {
-            case DragDropEffects.Copy:
-                _DragState.Text = "The text was copied"; break;
-            case DragDropEffects.Link:
-                _DragState.Text = "The text was linked"; break;
-            case DragDropEffects.None:
-                _DragState.Text = "The drag operation was canceled"; break;
-        }
     }
 
     private void DragOver(object sender, DragEventArgs e)
@@ -74,12 +53,10 @@ public partial class MainWindow : Window
         {
             _DropState.Text = string.Join(Environment.NewLine, e.Data.GetFileNames());
             // lbFiles.Items = e.Data.GetFileNames();
-            // lbFiles.SelectedIndex = 0;
-            Worker worker = new Worker(Program.ConfigDir);
+
             foreach(string filePath in e.Data.GetFileNames())
             {
-               txtUrl.Text = worker.UploadFile(filePath).URL;
-               Application.Current.Clipboard.SetTextAsync(txtUrl.Text);
+                Program.MyWorker.UploadFile(filePath);
             }
         }
     }

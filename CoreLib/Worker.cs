@@ -97,8 +97,6 @@ namespace UploaderX
 
                     UploadResult result = UploadFile(destPath);
                     DebugHelper.Logger.WriteLine(result.URL);
-
-                    OnUrlReceived(result.URL);
                 }
             }
             catch (Exception ex)
@@ -184,6 +182,8 @@ namespace UploaderX
                 Info.UploadDuration.Stop();
 
                 Console.WriteLine(uploader.Errors.ToString());
+
+                OnUrlReceived(result.URL);
 
                 return result;
             }

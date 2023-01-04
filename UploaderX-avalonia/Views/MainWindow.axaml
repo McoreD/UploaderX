@@ -19,23 +19,12 @@
         <TextBlock Text="{Binding UploadersConfigPath}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtUploadersConfigPath"/>
         <TextBlock Text="{Binding WatchDir}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtWatchDir"/>
         <TextBlock Text="{Binding DestSubDir}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtDestDir"/>
-        <TextBlock Text="{Binding Url, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtUrl"/>
-        <Border BorderThickness="2" Padding="16" Name="DragMe">
-            <TextBlock Name="DragState">Drag Me</TextBlock>
-        </Border>
-        <ListBox Items="{Binding FileObjectCollection}" Width="250" x:Name="lbFiles">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Background="Red" CornerRadius="4" Padding="4">
-                        <TextBlock Text="Drag some files here" TextWrapping="Wrap"/>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <Border Background="Red" CornerRadius="4" Padding="16"
+        <TextBlock Text="Drop a file here:"/>
+        <Border Background="Red" CornerRadius="4" Padding="64"
                 DragDrop.AllowDrop="True">
-            <TextBlock Name="DropState">Drop some files here</TextBlock>
+            <TextBlock Name="DropState"/>
         </Border>
+        <TextBlock Background="Green" Padding="16" Text="{Binding Url}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtUrl"/>
     </StackPanel>
 
 </Window>

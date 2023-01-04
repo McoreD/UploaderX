@@ -8,6 +8,7 @@ namespace UploaderX;
 public class Program
 {
     public readonly static string ConfigDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
+    public static Worker MyWorker = new Worker(ConfigDir);
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized

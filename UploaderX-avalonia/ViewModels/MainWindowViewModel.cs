@@ -55,22 +55,19 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
         }
     }
 
-    private Worker _worker;
-
     public MainWindowViewModel()
     {
         DebugHelper.Init(Path.Combine(Path.Combine(Program.ConfigDir, "Logs"), $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
 
         string AppSettingsDir = Path.Combine(Program.ConfigDir, "Settings");
 
-        _worker = new Worker(Program.ConfigDir);
-        _worker.UrlReceived += MainWindowViewModel_UrlReceivedAsync;
-        _worker.Watch();
+        Program.MyWorker.UrlReceived += MainWindowViewModel_UrlReceivedAsync;
+        Program.MyWorker.Watch();
 
-        AppConfigPath = _worker.AppConfigPath;
-        UploadersConfigPath = _worker.UploadersConfigPath;
-        WatchDir = _worker.WatchDir;
-        DestSubDir = _worker.DestSubDir;
+        AppConfigPath = Program.MyWorker.AppConfigPath;
+        UploadersConfigPath = Program.MyWorker.UploadersConfigPath;
+        WatchDir = Program.MyWorker.WatchDir;
+        DestSubDir = Program.MyWorker.DestSubDir;
 
        // fileObjectCollection.CollectionChanged += FileObjectCollection_CollectionChanged;
     }
