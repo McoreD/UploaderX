@@ -20,6 +20,13 @@
         <TextBlock Text="{Binding WatchDir}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtWatchDir"/>
         <TextBlock Text="{Binding DestSubDir}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtDestDir"/>
         <TextBlock Text="{Binding Url}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtUrl"/>
+        <Border BorderThickness="2" Padding="16" Name="DragMe">
+            <TextBlock Name="DragState">Drag Me</TextBlock>
+        </Border>
+        <Border Padding="16"
+                DragDrop.AllowDrop="True">
+            <TextBlock Name="DropState">Drop some text or files here</TextBlock>
+        </Border>
     </StackPanel>
 
 </Window>
