@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
@@ -37,7 +38,6 @@ public partial class MainWindow : Window
         Uri uri = new Uri(txtUrl.Text);
     }
 
-    // [STAThread]
     private async void DoDrag(object sender, Avalonia.Input.PointerPressedEventArgs e)
     {
         Debug.WriteLine("DoDrag");
@@ -56,10 +56,8 @@ public partial class MainWindow : Window
         }
     }
 
-    // [STAThread]
     private void DragOver(object sender, DragEventArgs e)
     {
-        Debug.WriteLine("DragOver");
         // Only allow Copy or Link as Drop Operations.
         e.DragEffects = e.DragEffects & (DragDropEffects.Copy | DragDropEffects.Link);
 
@@ -68,13 +66,21 @@ public partial class MainWindow : Window
             e.DragEffects = DragDropEffects.None;
     }
 
-    // [STAThread]
     private void Drop(object sender, DragEventArgs e)
     {
-        Debug.WriteLine("Drop");
         if (e.Data.Contains(DataFormats.Text))
             _DropState.Text = e.Data.GetText();
         else if (e.Data.Contains(DataFormats.FileNames))
+        {
             _DropState.Text = string.Join(Environment.NewLine, e.Data.GetFileNames());
+            // lbFiles.Items = e.Data.GetFileNames();
+            // lbFiles.SelectedIndex = 0;
+            Worker worker = new Worker(Program.ConfigDir);
+            foreach(string filePath in e.Data.GetFileNames())
+            {
+               txtUrl.Text = worker.UploadFile(filePath).URL;
+               Application.Current.Clipboard.SetTextAsync(txtUrl.Text);
+            }
+        }
     }
 }
