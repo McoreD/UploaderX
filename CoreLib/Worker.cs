@@ -95,24 +95,7 @@ namespace UploaderX
                         File.Move(e.FullPath, destPath, overwrite: true);
                     }, 1000);
 
-                    if (Path.GetExtension(destPath).ToLower().Equals(".mov"))
-                    {
-                        string ffmpegPath = Path.Combine(_ffmpegDir, "ffmpeg");
-                        FFmpegCLIManager ffmpeg = new FFmpegCLIManager(ffmpegPath);
-                        if (File.Exists(ffmpegPath))
-                        {
-                            string mp4Path = Path.ChangeExtension(destPath, "mp4");
-                            string args = $"-i \"{destPath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
-                            if (ffmpeg.Run(args))
-                            {
-                                FileHelpers.DeleteFile(destPath);
-                                destPath = mp4Path;
-                            }
-                        }
-                    }
-
-                    Init(destPath);
-                    UploadResult result = UploadFile();
+                    UploadResult result = UploadFile(destPath);
                     DebugHelper.Logger.WriteLine(result.URL);
 
                     OnUrlReceived(result.URL);
@@ -123,12 +106,6 @@ namespace UploaderX
                 DebugHelper.Logger.WriteLine(ex.Message);
             }
 
-        }
-
-        private void Init(string filePath)
-        {
-            Info = new TaskInfo();
-            Info.FilePath = filePath;
         }
 
         private bool LoadFileStream()
@@ -146,10 +123,31 @@ namespace UploaderX
             return true;
         }
 
-        private UploadResult UploadFile()
+        public UploadResult UploadFile(string filePath)
         {
+            if (Path.GetExtension(filePath).ToLower().Equals(".mov"))
+            {
+                string ffmpegPath = Path.Combine(_ffmpegDir, "ffmpeg");
+                FFmpegCLIManager ffmpeg = new FFmpegCLIManager(ffmpegPath);
+                if (File.Exists(ffmpegPath))
+                {
+                    string mp4Path = Path.ChangeExtension(filePath, "mp4");
+                    string args = $"-i \"{filePath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
+                    if (ffmpeg.Run(args))
+                    {
+                        FileHelpers.DeleteFile(filePath);
+                        filePath = mp4Path;
+                    }
+                }
+            }
+
+            Info = new TaskInfo();
+            Info.FilePath = filePath;
+
             LoadFileStream();
+
             return UploadFile(Data, Info.FileName);
+
         }
 
         private UploadResult UploadFile(Stream stream, string fileName)
