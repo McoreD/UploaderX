@@ -56,7 +56,7 @@ public partial class MainWindow : Window
 
             foreach(string filePath in e.Data.GetFileNames())
             {
-                Program.MyWorker.UploadFile(filePath);
+               Task.Run(() => Program.MyWorker.UploadFile(filePath));
             }
         }
     }
