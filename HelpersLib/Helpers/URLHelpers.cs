@@ -33,6 +33,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Cache;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -57,22 +58,19 @@ namespace ShareX.HelpersLib
                 {
                     try
                     {
-                        using (Process process = new Process())
+                        // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                         {
-                            ProcessStartInfo psi = new ProcessStartInfo();
-
-                            if (!string.IsNullOrEmpty(HelpersOptions.BrowserPath))
-                            {
-                                psi.FileName = HelpersOptions.BrowserPath;
-                                psi.Arguments = url;
-                            }
-                            else
-                            {
-                                psi.FileName = url;
-                            }
-
-                            process.StartInfo = psi;
-                            process.Start();
+                            url = url.Replace("&", "^&");
+                            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                        }
+                        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                        {
+                            Process.Start("xdg-open", url);
+                        }
+                        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                        {
+                            Process.Start("open", url);
                         }
 
                         DebugHelper.WriteLine("URL opened: " + url);
