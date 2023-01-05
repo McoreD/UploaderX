@@ -15,16 +15,40 @@
     </Design.DataContext>
 
     <StackPanel>
-        <TextBlock Text="{Binding AppConfigPath}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtAppConfigPath"/>
-        <TextBlock Text="{Binding UploadersConfigPath}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtUploadersConfigPath"/>
-        <TextBlock Text="{Binding WatchDir}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtWatchDir"/>
-        <TextBlock Text="{Binding DestSubDir}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtDestDir"/>
-        <TextBlock Text="Drop a file here:"/>
-        <Border Background="Red" CornerRadius="4" Padding="64"
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="AppConfigPath:"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="UploadersConfigPath:"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Watch directory:"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Screenshots directory:"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding AppConfigPath}" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="txtAppConfigPath"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding UploadersConfigPath}" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="txtUploadersConfigPath"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding WatchDir}" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="txtWatchDir"/>
+            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding DestSubDir}" HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="txtDestDir"/>
+        </Grid>
+
+        <TextBlock Grid.Row="4" Text="Drop a file here:"/>
+
+        <ListBox x:Name="lbFiles" Items="{Binding FileObjectCollection}">
+        </ListBox>
+
+        <Border Background="Orange" CornerRadius="4" Padding="64"
                 DragDrop.AllowDrop="True">
             <TextBlock Name="DropState"/>
         </Border>
         <TextBlock Background="Green" Padding="16" Text="{Binding Url}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtUrl"/>
+
     </StackPanel>
 
 </Window>

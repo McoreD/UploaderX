@@ -14,6 +14,7 @@ public partial class MainWindow : Window
     private TextBlock _DropState;
     private TextBlock _DragState;
     private TextBlock _Url;
+    private ListBox _Files;
 
     public MainWindow()
     {
@@ -25,6 +26,7 @@ public partial class MainWindow : Window
         _DropState = this.Find<TextBlock>("DropState");
         _DragState = this.Find<TextBlock>("DragState");
         _Url = this.Find<TextBlock>("txtUrl");
+        _Files = this.Find<ListBox>("lbFiles");
 
         AddHandler(DragDrop.DropEvent, Drop);
         AddHandler(DragDrop.DragOverEvent, DragOver);
@@ -47,16 +49,13 @@ public partial class MainWindow : Window
 
     private void Drop(object sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataFormats.Text))
-            _DropState.Text = e.Data.GetText();
-        else if (e.Data.Contains(DataFormats.FileNames))
+        if (e.Data.Contains(DataFormats.FileNames))
         {
             _DropState.Text = string.Join(Environment.NewLine, e.Data.GetFileNames());
-            // lbFiles.Items = e.Data.GetFileNames();
 
-            foreach(string filePath in e.Data.GetFileNames())
+            foreach (string filePath in e.Data.GetFileNames())
             {
-               Task.Run(() => Program.MyWorker.UploadFile(filePath));
+                Task.Run(() => Program.MyWorker.UploadFile(filePath));
             }
         }
     }
