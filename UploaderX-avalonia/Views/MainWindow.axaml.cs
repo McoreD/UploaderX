@@ -6,15 +6,14 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using ShareX.HelpersLib;
 
 namespace UploaderX.Views;
 
 public partial class MainWindow : Window
 {
     private TextBlock _DropState;
-    private TextBlock _DragState;
-    private TextBlock _Url;
-    private ListBox _Files;
+    private ListBox _Urls;
 
     public MainWindow()
     {
@@ -24,17 +23,17 @@ public partial class MainWindow : Window
         AvaloniaXamlLoader.Load(this);
 
         _DropState = this.Find<TextBlock>("DropState");
-        _DragState = this.Find<TextBlock>("DragState");
-        _Url = this.Find<TextBlock>("txtUrl");
-        _Files = this.Find<ListBox>("lbFiles");
+        _Urls = this.Find<ListBox>("lbUrls");
 
-        AddHandler(DragDrop.DropEvent, Drop);
+        AddHandler(DragDrop.DropEvent, DropAsync);
         AddHandler(DragDrop.DragOverEvent, DragOver);
+        _Urls.Tapped += _Urls_Tapped;
     }
 
-    private async void BtnGo_ClickAsync(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void _Urls_Tapped(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        Uri uri = new Uri(txtUrl.Text);
+        string url = ((ListBox)sender).SelectedItem.ToString();
+        URLHelpers.OpenURL(url);
     }
 
     private void DragOver(object sender, DragEventArgs e)
@@ -47,16 +46,12 @@ public partial class MainWindow : Window
             e.DragEffects = DragDropEffects.None;
     }
 
-    private void Drop(object sender, DragEventArgs e)
+    private async Task DropAsync(object sender, DragEventArgs e)
     {
         if (e.Data.Contains(DataFormats.FileNames))
         {
             _DropState.Text = string.Join(Environment.NewLine, e.Data.GetFileNames());
-
-            foreach (string filePath in e.Data.GetFileNames())
-            {
-                Task.Run(() => Program.MyWorker.UploadFile(filePath));
-            }
+            await Task.Run(() => Program.MyWorker.UploadFiles(e.Data.GetFileNames()));
         }
     }
 }

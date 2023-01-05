@@ -28,13 +28,18 @@ namespace UploaderX
         private TaskReferenceHelper taskReferenceHelper;
 
         private FileSystemWatcher _watcher;
+
+        public delegate void UrlCollectionReceivedEventHandler(IEnumerable<string> filePaths);
+        public event UrlCollectionReceivedEventHandler UrlCollectionReceived;
+
         public delegate void UrlReceivedEventHandler(string url);
         public event UrlReceivedEventHandler UrlReceived;
 
 
         public Worker(string configDir)
         {
-            DebugHelper.Init(Path.Combine(Path.Combine(configDir, "Logs"), $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
+            DebugHelper.Init(Path.Combine(Path.Combine(configDir, "Logs"),
+                $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
             _ffmpegDir = Path.Combine(configDir, "Tools");
             string settingsDir = Path.Combine(configDir, "Settings");
             AppConfigPath = Path.Combine(settingsDir, "ApplicationConfig.json");
@@ -44,9 +49,12 @@ namespace UploaderX
             _uploadersConfig = UploadersConfig.Load(UploadersConfigPath);
             _uploadersConfig.SupportDPAPIEncryption = false;
 
-            WatchDir = Directory.Exists(_appConfig.CustomScreenshotsPath2) ? _appConfig.CustomScreenshotsPath2 : Path.Combine(configDir, "Watch Folder");
+            WatchDir = Directory.Exists(_appConfig.CustomScreenshotsPath2)
+                ? _appConfig.CustomScreenshotsPath2
+                : Path.Combine(configDir, "Watch Folder");
             DestDir = WatchDir;
-            DestSubDir = Path.Combine(Path.Combine(DestDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM"));
+            DestSubDir = Path.Combine(Path.Combine(DestDir, DateTime.Now.ToString("yyyy")),
+                DateTime.Now.ToString("yyyy-MM"));
 
             Helpers.CreateDirectoryFromDirectoryPath(WatchDir);
         }
@@ -65,7 +73,8 @@ namespace UploaderX
         {
             try
             {
-                string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%dT%h%mi%s_%ra{6}") + Path.GetExtension(e.FullPath);
+                string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%dT%h%mi%s_%ra{6}") +
+                                  Path.GetExtension(e.FullPath);
                 string destPath = Path.Combine(DestSubDir, fileName);
                 FileHelpers.CreateDirectoryFromFilePath(destPath);
                 if (!Path.GetFileName(e.FullPath).StartsWith("."))
@@ -90,10 +99,7 @@ namespace UploaderX
 
                         previousSize = -1;
                         return true;
-                    }, 250, 5000, () =>
-                    {
-                        File.Move(e.FullPath, destPath, overwrite: true);
-                    }, 1000);
+                    }, 250, 5000, () => { File.Move(e.FullPath, destPath, overwrite: true); }, 1000);
 
                     UploadResult result = UploadFile(destPath);
                     DebugHelper.Logger.WriteLine(result.URL);
@@ -103,7 +109,6 @@ namespace UploaderX
             {
                 DebugHelper.Logger.WriteLine(ex.Message);
             }
-
         }
 
         private bool LoadFileStream()
@@ -121,6 +126,22 @@ namespace UploaderX
             return true;
         }
 
+        public List<UploadResult> UploadFiles(IEnumerable<string> filePaths)
+        {
+            List<string> urls = new List<string>();
+            List<UploadResult> results = new List<UploadResult>();
+            foreach (string filePath in filePaths)
+            {
+                UploadResult r = UploadFile(filePath);
+                if (r != null)
+                    urls.Add(r.URL);
+                results.Add(r);
+            }
+            
+            OnFilesDropped(urls);
+            return results;
+        }
+
         public UploadResult UploadFile(string filePath)
         {
             if (Path.GetExtension(filePath).ToLower().Equals(".mov"))
@@ -130,7 +151,8 @@ namespace UploaderX
                 if (File.Exists(ffmpegPath))
                 {
                     string mp4Path = Path.ChangeExtension(filePath, "mp4");
-                    string args = $"-i \"{filePath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
+                    string args =
+                        $"-i \"{filePath}\" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart -y \"{mp4Path}\"";
                     if (ffmpeg.Run(args))
                     {
                         FileHelpers.DeleteFile(filePath);
@@ -145,7 +167,6 @@ namespace UploaderX
             LoadFileStream();
 
             return UploadFile(Data, Info.FileName);
-
         }
 
         private UploadResult UploadFile(Stream stream, string fileName)
@@ -159,12 +180,12 @@ namespace UploaderX
             {
                 service = UploaderFactory.ImageUploaderServices[ImageDestination.Imgur];
             }
+
             return UploadData(service, stream, fileName);
         }
 
         private UploadResult UploadData(IGenericUploaderService service, Stream stream, string fileName)
         {
-
             uploader = service.CreateUploader(_uploadersConfig, taskReferenceHelper);
 
             if (uploader != null)
@@ -183,12 +204,23 @@ namespace UploaderX
 
                 Console.WriteLine(uploader.Errors.ToString());
 
-                OnUrlReceived(result.URL);
+                if (result != null)
+                    OnUrlReceived(result.URL);
 
                 return result;
             }
 
             return null;
+        }
+
+        private void OnFilesDropped(IEnumerable<string> filePaths)
+        {
+            UrlCollectionReceived?.Invoke(filePaths);
+        }
+
+        private void OnUrlReceived(string url)
+        {
+            UrlReceived?.Invoke(url);
         }
 
         public void Dispose()
@@ -199,12 +231,5 @@ namespace UploaderX
                 Data = null;
             }
         }
-
-        private void OnUrlReceived(string url)
-        {
-            UrlReceived?.Invoke(url);
-        }
-
     }
 }
-

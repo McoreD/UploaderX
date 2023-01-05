@@ -1,9 +1,11 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia;
@@ -23,9 +25,6 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public delegate void FileDroppedEventHandler(string[] filePath);
-    public event FileDroppedEventHandler FileDropped;
-
     public string AppConfigPath { get; set; }
     public string UploadersConfigPath { get; set; }
     public string WatchDir { get; set; }
@@ -43,14 +42,14 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
         }
     }
 
-    private ObservableCollection<FileObject> fileObjectCollection = new ObservableCollection<FileObject>();
-    public ObservableCollection<FileObject> FileObjectCollection
+    private ObservableCollection<string> urlsCollection = new ObservableCollection<string>();
+    public ObservableCollection<string> UrlsCollection
     {
-        get { return fileObjectCollection; }
+        get { return urlsCollection; }
         set
         {
-            if (value != this.fileObjectCollection)
-                fileObjectCollection = value;
+            if (value != this.urlsCollection)
+                urlsCollection = value;
             this.SetPropertyChanged("FileObjectCollection");
         }
     }
@@ -61,7 +60,8 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
 
         string AppSettingsDir = Path.Combine(Program.ConfigDir, "Settings");
 
-        Program.MyWorker.UrlReceived += MainWindowViewModel_UrlReceivedAsync;
+        Program.MyWorker.UrlReceived += MyWorker_UrlReceivedAsync;
+        Program.MyWorker.UrlCollectionReceived += MyWorker_UrlCollectionReceivedAsync;
         Program.MyWorker.Watch();
 
         AppConfigPath = Program.MyWorker.AppConfigPath;
@@ -69,17 +69,18 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
         WatchDir = Program.MyWorker.WatchDir;
         DestSubDir = Program.MyWorker.DestSubDir;
 
-       // fileObjectCollection.CollectionChanged += FileObjectCollection_CollectionChanged;
     }
 
-    private void FileObjectCollection_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private async void MyWorker_UrlCollectionReceivedAsync(IEnumerable<string> filePaths)
     {
-        Debug.WriteLine(fileObjectCollection[0].ToString());
+        string urls = string.Join(Environment.NewLine, urlsCollection);
+        await Application.Current.Clipboard.SetTextAsync(urls);
     }
-
-    private async void MainWindowViewModel_UrlReceivedAsync(string url)
+    
+    private async void MyWorker_UrlReceivedAsync(string url)
     {
         Url = url;
+        urlsCollection.Add(url);
         await Application.Current.Clipboard.SetTextAsync(url);
     }
 

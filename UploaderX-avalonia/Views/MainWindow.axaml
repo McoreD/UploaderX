@@ -40,15 +40,11 @@
 
         <TextBlock Grid.Row="4" Text="Drop a file here:"/>
 
-        <ListBox x:Name="lbFiles" Items="{Binding FileObjectCollection}">
-        </ListBox>
-
         <Border Background="Orange" CornerRadius="4" Padding="64"
                 DragDrop.AllowDrop="True">
             <TextBlock Name="DropState"/>
         </Border>
-        <TextBlock Background="Green" Padding="16" Text="{Binding Url}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txtUrl"/>
-
+        <ListBox x:Name="lbUrls" Background="Green" Items="{Binding UrlsCollection}"/>
     </StackPanel>
 
 </Window>
