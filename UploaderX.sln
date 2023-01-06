@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploaderX-avalonia", "Uploa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploaderX.CoreLib", "CoreLib\UploaderX.CoreLib.csproj", "{5E48DCA6-7ACB-4CBC-B701-B226944DF67A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploaderX-maui", "UploaderX-maui\UploaderX-maui.csproj", "{38555C94-9050-42A0-8F87-A1CEA4BAE016}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploaderX-cli", "UploaderX-cli\UploaderX-cli.csproj", "{12C48963-5F7F-4901-8F9F-4938E119B27E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{5E48DCA6-7ACB-4CBC-B701-B226944DF67A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E48DCA6-7ACB-4CBC-B701-B226944DF67A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E48DCA6-7ACB-4CBC-B701-B226944DF67A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38555C94-9050-42A0-8F87-A1CEA4BAE016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38555C94-9050-42A0-8F87-A1CEA4BAE016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38555C94-9050-42A0-8F87-A1CEA4BAE016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38555C94-9050-42A0-8F87-A1CEA4BAE016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12C48963-5F7F-4901-8F9F-4938E119B27E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12C48963-5F7F-4901-8F9F-4938E119B27E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12C48963-5F7F-4901-8F9F-4938E119B27E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12C48963-5F7F-4901-8F9F-4938E119B27E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

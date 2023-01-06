@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 25.0.1704.2
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploaderX", "UploaderX-cli\UploaderX.csproj", "{7E74E7B8-DEE6-4228-B41A-FA9205321AA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploaderX-cli", "UploaderX-cli\UploaderX-cli.csproj", "{7E74E7B8-DEE6-4228-B41A-FA9205321AA9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploadersLib", "UploadersLib\UploadersLib.csproj", "{0F43F769-55C7-484C-9203-9BC08587584E}"
 EndProject

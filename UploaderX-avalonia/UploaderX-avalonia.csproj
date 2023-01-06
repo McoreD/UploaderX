@@ -5,8 +5,9 @@
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ReleaseVersion>0.3.2</ReleaseVersion>
+    <ReleaseVersion>0.5.0</ReleaseVersion>
     <ApplicationIcon>Assets\avalonia-logo.ico</ApplicationIcon>
+    <AssemblyName>UploaderX</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
