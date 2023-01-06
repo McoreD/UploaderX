@@ -60,6 +60,7 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
 
         string AppSettingsDir = Path.Combine(Program.ConfigDir, "Settings");
 
+        Program.MyWorker.FilesDropped += MyWorker_FilesDropped;
         Program.MyWorker.UrlReceived += MyWorker_UrlReceivedAsync;
         Program.MyWorker.UrlCollectionReceived += MyWorker_UrlCollectionReceivedAsync;
         Program.MyWorker.Watch();
@@ -71,10 +72,15 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
 
     }
 
-    private async void MyWorker_UrlCollectionReceivedAsync(IEnumerable<string> filePaths)
+    private void MyWorker_FilesDropped(IEnumerable<string> filePaths)
     {
-        string urls = string.Join(Environment.NewLine, urlsCollection);
-        await Application.Current.Clipboard.SetTextAsync(urls);
+        UrlsCollection.Clear();
+    }
+
+    private async void MyWorker_UrlCollectionReceivedAsync(IEnumerable<string> urls)
+    {
+        string urlsString = string.Join(Environment.NewLine, urlsCollection);
+        await Application.Current.Clipboard.SetTextAsync(urlsString);
     }
     
     private async void MyWorker_UrlReceivedAsync(string url)

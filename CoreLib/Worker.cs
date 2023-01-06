@@ -29,6 +29,9 @@ namespace UploaderX
 
         private FileSystemWatcher _watcher;
 
+        public delegate void FilesDroppedEventHandler(IEnumerable<string> filePaths);
+        public event FilesDroppedEventHandler FilesDropped;
+
         public delegate void UrlCollectionReceivedEventHandler(IEnumerable<string> filePaths);
         public event UrlCollectionReceivedEventHandler UrlCollectionReceived;
 
@@ -128,6 +131,8 @@ namespace UploaderX
 
         public List<UploadResult> UploadFiles(IEnumerable<string> filePaths)
         {
+            OnFilesDropped(filePaths);
+
             List<string> urls = new List<string>();
             List<UploadResult> results = new List<UploadResult>();
             foreach (string filePath in filePaths)
@@ -138,7 +143,7 @@ namespace UploaderX
                 results.Add(r);
             }
             
-            OnFilesDropped(urls);
+            OnUrlCollectionReceived(urls);
             return results;
         }
 
@@ -215,7 +220,12 @@ namespace UploaderX
 
         private void OnFilesDropped(IEnumerable<string> filePaths)
         {
-            UrlCollectionReceived?.Invoke(filePaths);
+            FilesDropped?.Invoke(filePaths);
+        }
+
+        private void OnUrlCollectionReceived(IEnumerable<string> urls)
+        {
+            UrlCollectionReceived?.Invoke(urls);
         }
 
         private void OnUrlReceived(string url)
