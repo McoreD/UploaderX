@@ -8,6 +8,7 @@ public partial class MainPage : ContentPage
     readonly string _configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "UploaderX");
 
     private Worker _worker;
+    private WebView _browser;
 
     public MainPage()
     {
@@ -15,13 +16,15 @@ public partial class MainPage : ContentPage
         txtAppPath.Text = Process.GetCurrentProcess().MainModule.FileName;
 
         _worker = new Worker(_configDir);
-        _worker.UrlReceived += _worker_UrlReceived; ;
+        _worker.UrlReceived += _worker_UrlReceived;
         _worker.Watch();
      
         txtAppConfigPath.Text = _worker.AppConfigPath;
         txtUploaderConfigPath.Text = _worker.UploadersConfigPath;
         txtWatchDir.Text = _worker.WatchDir;
         txtScreenshotsDir.Text = _worker.DestSubDir;
+
+        _browser = this.FindByName<WebView>("wvUrl");
     }
 
     private void _worker_UrlReceived(string url)
@@ -30,7 +33,7 @@ public partial class MainPage : ContentPage
         {
             Clipboard.Default.SetTextAsync(url);
             lblUrl.Text = url;
-            wvUrl.Source = new UrlWebViewSource() { Url = url };
+            _browser.Source = new UrlWebViewSource() { Url = url };
         });
     }
 
@@ -42,9 +45,6 @@ public partial class MainPage : ContentPage
 
     async void btnBrowseWatchDir_Clicked(System.Object sender, System.EventArgs e)
     {
-        //TODO: Result returns file://
-        //IFolderPicker folderPicker = new FolderPicker(); 
-        // txtWatchDir.Text = await folderPicker.PickFolder();
         Helpers.OpenFolder(txtWatchDir.Text);
     }
 
