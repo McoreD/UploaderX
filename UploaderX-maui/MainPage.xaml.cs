@@ -22,7 +22,7 @@ public partial class MainPage : ContentPage
         txtAppConfigPath.Text = _worker.AppConfigPath;
         txtUploaderConfigPath.Text = _worker.UploadersConfigPath;
         txtWatchDir.Text = _worker.WatchDir;
-        txtScreenshotsDir.Text = _worker.DestSubDir;
+        txtScreenshotsDir.Text = _worker.DestDir;
 
         _browser = this.FindByName<WebView>("wvUrl");
     }

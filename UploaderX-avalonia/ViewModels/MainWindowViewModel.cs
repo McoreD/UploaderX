@@ -68,7 +68,7 @@ public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
         AppConfigPath = Program.MyWorker.AppConfigPath;
         UploadersConfigPath = Program.MyWorker.UploadersConfigPath;
         WatchDir = Program.MyWorker.WatchDir;
-        DestSubDir = Program.MyWorker.DestSubDir;
+        DestSubDir = Program.MyWorker.DestDir;
 
     }
 

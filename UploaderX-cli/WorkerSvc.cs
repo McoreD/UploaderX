@@ -31,7 +31,7 @@ public class WorkerSvc : BackgroundService
         _worker.Watch();
 
         _logger.LogInformation("Watch Dir: " + _worker.WatchDir);
-        _logger.LogInformation("Destination Dir: " + _worker.DestSubDir);
+        _logger.LogInformation("Destination Dir: " + _worker.DestDir);
     }
 }
 

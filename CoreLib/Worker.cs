@@ -17,7 +17,6 @@ namespace UploaderX
         public string UploadersConfigPath { get; set; }
         public string WatchDir { get; set; }
         public string DestDir { get; set; }
-        public string DestSubDir { get; set; }
 
         string _ffmpegDir;
 
@@ -41,8 +40,7 @@ namespace UploaderX
 
         public Worker(string configDir)
         {
-            DebugHelper.Init(Path.Combine(Path.Combine(configDir, "Logs"),
-                $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
+            DebugHelper.Init(Path.Combine(Path.Combine(configDir, "Logs"), $"UploaderX-{DateTime.Now.ToString("yyyyMMdd")}-Log.txt"));
             _ffmpegDir = Path.Combine(configDir, "Tools");
             string settingsDir = Path.Combine(configDir, "Settings");
             AppConfigPath = Path.Combine(settingsDir, "ApplicationConfig.json");
@@ -52,12 +50,10 @@ namespace UploaderX
             _uploadersConfig = UploadersConfig.Load(UploadersConfigPath);
             _uploadersConfig.SupportDPAPIEncryption = false;
 
-            WatchDir = Directory.Exists(_appConfig.CustomScreenshotsPath2)
+            WatchDir = Directory.Exists(_appConfig.CustomScreenshotsPath2) 
                 ? _appConfig.CustomScreenshotsPath2
                 : Path.Combine(configDir, "Watch Folder");
             DestDir = WatchDir;
-            DestSubDir = Path.Combine(Path.Combine(DestDir, DateTime.Now.ToString("yyyy")),
-                DateTime.Now.ToString("yyyy-MM"));
 
             Helpers.CreateDirectoryFromDirectoryPath(WatchDir);
         }
@@ -78,7 +74,8 @@ namespace UploaderX
             {
                 string fileName = new NameParser(NameParserType.FileName).Parse("%y%mo%dT%h%mi%s_%ra{6}") +
                                   Path.GetExtension(e.FullPath);
-                string destPath = Path.Combine(DestSubDir, fileName);
+                string destSubDir = Path.Combine(Path.Combine(DestDir, DateTime.Now.ToString("yyyy")), DateTime.Now.ToString("yyyy-MM"));
+                string destPath = Path.Combine(destSubDir, fileName);
                 FileHelpers.CreateDirectoryFromFilePath(destPath);
                 if (!Path.GetFileName(e.FullPath).StartsWith("."))
                 {
@@ -142,7 +139,7 @@ namespace UploaderX
                     urls.Add(r.URL);
                 results.Add(r);
             }
-            
+
             OnUrlCollectionReceived(urls);
             return results;
         }
