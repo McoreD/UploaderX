@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-UploaderX-2a649aad-f42c-4249-bc01-78b773ce8191</UserSecretsId>
     <AssemblyName>UploaderX</AssemblyName>
-    <ReleaseVersion>0.5.1</ReleaseVersion>
+    <ReleaseVersion>0.6.0</ReleaseVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'UploaderX' ">

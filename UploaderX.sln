@@ -101,6 +101,6 @@ Global
 		$14.inheritsSet = null
 		$14.scope = application/xaml
 		$0.StandardHeader = $15
-		version = 0.5.1
+		version = 0.6.0
 	EndGlobalSection
 EndGlobal
