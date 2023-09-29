@@ -24,10 +24,12 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="MegaApiClient" Version="1.10.3" />
-	  <PackageReference Include="FluentFTP" Version="43.0.1" />
+	  <PackageReference Include="FluentFTP" Version="47.1.0" />
 	  <PackageReference Include="SSH.NET" Version="2020.0.2" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\HelpersLib\HelpersLib.csproj" />
+	  <ProjectReference Include="..\HelpersLib\HelpersLib.csproj">
+	    <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+	  </ProjectReference>
 	</ItemGroup>
 </Project>

@@ -14,13 +14,19 @@
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UploadersLib\UploadersLib.csproj" />
-    <ProjectReference Include="..\MediaLib\MediaLib.csproj" />
-    <ProjectReference Include="..\CoreLib\UploaderX.CoreLib.csproj" />
+    <ProjectReference Include="..\UploadersLib\UploadersLib.csproj">
+      <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+    </ProjectReference>
+    <ProjectReference Include="..\MediaLib\MediaLib.csproj">
+      <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+    </ProjectReference>
+    <ProjectReference Include="..\CoreLib\UploaderX.CoreLib.csproj">
+      <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="TextCopy" />

@@ -14,8 +14,14 @@
 	  <AssemblyName>UploaderX.CoreLib</AssemblyName>
 	</PropertyGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\HelpersLib\HelpersLib.csproj" />
-	  <ProjectReference Include="..\MediaLib\MediaLib.csproj" />
-	  <ProjectReference Include="..\UploadersLib\UploadersLib.csproj" />
+	  <ProjectReference Include="..\HelpersLib\HelpersLib.csproj">
+	    <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+	  </ProjectReference>
+	  <ProjectReference Include="..\MediaLib\MediaLib.csproj">
+	    <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+	  </ProjectReference>
+	  <ProjectReference Include="..\UploadersLib\UploadersLib.csproj">
+	    <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+	  </ProjectReference>
 	</ItemGroup>
 </Project>

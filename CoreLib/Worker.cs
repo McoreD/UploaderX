@@ -202,6 +202,22 @@ namespace UploaderX
 
                 UploadResult result = uploader.Upload(stream, fileName);
 
+                if (result == null || result.URL == null)
+                {
+                    int retries = 0;
+                    while (retries < 3)
+                    {
+                        result = uploader.Upload(stream, fileName);
+
+                        if (result != null && result.URL != null)
+                        {
+                            break;
+                        }
+
+                        retries++;
+                    }
+                }
+
                 Info.UploadDuration.Stop();
 
                 Console.WriteLine(uploader.Errors.ToString());
